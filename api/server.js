@@ -5,6 +5,9 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 
+// Routers import 
+const schoolRouter = require("./routers/school.router")
+
 const app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -24,7 +27,9 @@ mongoose.connect("mongodb://localhost:27017/schoolManagement")
     app.get("/test", (req, res)=>{
          res.send({id:1,message:"welcome it is working"})
     })
+//// Routers
 
+app.use("/api/school", schoolRouter)
 
 const PORT = process.env.PORT 
 
