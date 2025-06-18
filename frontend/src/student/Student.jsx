@@ -16,20 +16,16 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize"
-import PeopleIcon from "@mui/icons-material/People"
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt"
 import EventIcon from "@mui/icons-material/Event"
 import NotificationsIcon from "@mui/icons-material/Notifications"
-import SubjectIcons from "@mui/icons-material/Subject"
 import ExplicitIcons from "@mui/icons-material/Explicit"
 import RecentActorsIcons from "@mui/icons-material/RecentActors"
-import FormatListNumberedIcons from "@mui/icons-material/FormatListNumbered"
+import HomeIcon from "@mui/icons-material/Home"
+
 
 
 
@@ -131,7 +127,8 @@ export default function Student() {
 
   // eslint-disable-next-line no-unused-vars
   const navArr = [
-    {      Link:'/student', component:"Your's Details", icon:DashboardCustomizeIcon   },
+    {      Link:'/', component:"Home", icon:HomeIcon   },
+    {      Link:'/student', component:"Your's Detais", icon:DashboardCustomizeIcon   },
      {Link:"/student/schedule", component:"Schedule", icon:EventIcon},
      {Link:"/student/attendance", component:"Attendance", icon:RecentActorsIcons},
      {Link:"/student/examinations", component:"Examinations", icon:ExplicitIcons},

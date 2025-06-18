@@ -16,8 +16,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 
@@ -30,6 +28,7 @@ import SubjectIcons from "@mui/icons-material/Subject"
 import ExplicitIcons from "@mui/icons-material/Explicit"
 import RecentActorsIcons from "@mui/icons-material/RecentActors"
 import FormatListNumberedIcons from "@mui/icons-material/FormatListNumbered"
+import HomeIcon from "@mui/icons-material/Home"
 
 
 
@@ -131,7 +130,8 @@ export default function School() {
 
   // eslint-disable-next-line no-unused-vars
   const navArr = [
-    {      Link:'/', component:"Dashboard", icon:DashboardCustomizeIcon   },
+    { Link:'/', component:"Home", icon: HomeIcon   },
+    { Link:'/school', component:"Dashboard", icon:DashboardCustomizeIcon   },
      {Link:"/school/class", component:"Class", icon:FormatListNumberedIcons},
      {Link:"/school/subject", component:"Subject", icon:SubjectIcons},
      {Link:"/school/students", component:"Students", icon:PeopleIcon},
