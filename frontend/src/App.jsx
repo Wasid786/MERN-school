@@ -14,6 +14,18 @@ import Client from './client/Client'
 import Home from './client/components/home/Home'
 import Login from './client/components/login/Login'
 import Register from './client/components/register/Register'
+import Teacher from './teacher/Teacher'
+import TeacherDetails from './teacher/components/teacher details/TeacherDetails'
+import ScheduleTeacher from './teacher/components/schedule/ScheduleTeacher'
+import ExaminationsTeacher from './teacher/components/examinations/ExaminationsTeacher'
+import NoticeTeacher from './teacher/components/notice/NoticeTeacher'
+import Student from './student/Student'
+import StudentDetails from './student/components/student details/StudentDetails'
+import ScheduleStudent from './student/components/schedule/ScheduleStudent'
+import AttendanceStudent from './student/components/attendance/AttendanceStudent'
+import ExaminationsStudent from './student/components/examinations/ExaminationsStudent'
+import NoticeStudent from './student/components/notice/NoticeStudent'
+import AttendaceTeacher from './teacher/components/attendance/AttendaceTeacher'
 
 
 
@@ -35,7 +47,7 @@ function App() {
         <Route path='notice' element={<Notice/>} />
         <Route path='schedule' element={<Schedule/>} />
         <Route path='students' element={<Students/>} />
-        <Route path='subject' element={<Subjects/>} />
+        <Route path='subjects' element={<Subjects/>} />
         <Route path='teachers' element={<Teachers/>} />
 
         {/* <Route path='class-details' element={<ClassDetails/>} />
@@ -52,11 +64,25 @@ function App() {
        <Route path="periods"element={<ScheduleStudent/>}/>
        <Route path="attendance"element={<AttendanceStudent/>}/>
        <Route path="notice"element={<NoticeStudent/>}/>
+       
         </Route> */}
+          <Route path='student' element={<Student/>}>
+
+           <Route index element={<StudentDetails/>} />
+         <Route path='schedule' element={<ScheduleStudent/>} />
+         <Route path='attendance' element={<AttendanceStudent/>} />
+         <Route path='examinations' element={<ExaminationsStudent/>} />
+         <Route path='notice' element={<NoticeStudent/>} />
+          
+          </Route>
 
        {/* //// Teacher ////// */}
-         <Route>
-
+         <Route path='teacher' element={<Teacher/>}>
+         <Route index element={<TeacherDetails/>} />
+         <Route path='schedule' element={<ScheduleTeacher/>} />
+         <Route path='attendance' element={<AttendaceTeacher/>} />
+         <Route path='examinations' element={<ExaminationsTeacher/>} />
+         <Route path='notice' element={<NoticeTeacher/>} />
         </Route> 
        
 
