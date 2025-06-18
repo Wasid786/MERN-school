@@ -18,7 +18,24 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+
+
+import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize"
+import PeopleIcon from "@mui/icons-material/People"
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt"
+import EventIcon from "@mui/icons-material/Event"
+import NotificationsIcon from "@mui/icons-material/Notifications"
+import SubjectIcons from "@mui/icons-material/Subject"
+import ExplicitIcons from "@mui/icons-material/Explicit"
+import RecentActorsIcons from "@mui/icons-material/RecentActors"
+import FormatListNumberedIcons from "@mui/icons-material/FormatListNumbered"
+
+
+
+
+
+
 
 const drawerWidth = 240;
 
@@ -112,6 +129,27 @@ export default function School() {
     setOpen(false);
   };
 
+  // eslint-disable-next-line no-unused-vars
+  const navArr = [
+    {      Link:'/', component:"Dashboard", icon:DashboardCustomizeIcon   },
+     {Link:"/school/class", component:"Class", icon:FormatListNumberedIcons},
+     {Link:"/school/subject", component:"Subject", icon:SubjectIcons},
+     {Link:"/school/students", component:"Students", icon:PeopleIcon},
+     {Link:"/school/teachers", component:"Teachers", icon:PeopleAltIcon},
+     {Link:"/school/schedule", component:"Schedule", icon:EventIcon},
+     {Link:"/school/attendance", component:"Attendance", icon:RecentActorsIcons},
+     {Link:"/school/examinations", component:"Examinations", icon:ExplicitIcons},
+     /// he use class for the notification component why ? 
+     {Link:"/school/notice", component:"Notice", icon:NotificationsIcon},
+
+
+  ]
+
+   const navigate = useNavigate();
+  const handleNavigation= (link)=>{
+     navigate(link)
+  }
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -132,7 +170,7 @@ export default function School() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+        School Management System [Multiple]
           </Typography>
         </Toolbar>
       </AppBar>
@@ -144,8 +182,8 @@ export default function School() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+          {navArr.map((navItem, index) => (
+            <ListItem key={index } disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={[
                   {
@@ -160,6 +198,8 @@ export default function School() {
                         justifyContent: 'center',
                       },
                 ]}
+
+                onClick={()=> handleNavigation(navItem.Link)}
               >
                 <ListItemIcon
                   sx={[
@@ -176,10 +216,10 @@ export default function School() {
                         },
                   ]}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {<navItem.icon />}
                 </ListItemIcon>
                 <ListItemText
-                  primary={text}
+                  primary={navItem.component}
                   sx={[
                     open
                       ? {
@@ -195,7 +235,7 @@ export default function School() {
           ))}
         </List>
         <Divider />
-        <List>
+        {/* <List>
           {['All mail', 'Trash', 'Spam'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
@@ -245,7 +285,7 @@ export default function School() {
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
+        </List> */}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
