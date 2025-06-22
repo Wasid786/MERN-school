@@ -64,10 +64,11 @@ export default function Login() {
       backgroundSize: "cover",
       backgroundRepeat:"no-repeat",
       height:"100%",
+     minHeight:"80vh",
       paddingTop:"60px",
-      paddingBottom:"60px"
+      paddingBottom:"60px",
+    
     }}> 
-
 
   {message &&    
       <MessageSnackBar
@@ -75,7 +76,7 @@ export default function Login() {
   messageType={messageType}
   handleClose={handleMessageClose}
 /> }
-<Typography variant='h2' sx={{textAlign:"center"}}>Login</Typography>
+
   
     <Box
       component="form"
@@ -87,6 +88,7 @@ export default function Login() {
       onSubmit={Formik.handleSubmit}
     >
 
+<Typography variant='h2' sx={{textAlign:"center"}}>Login</Typography>
   
 
 
