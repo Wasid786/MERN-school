@@ -5,8 +5,16 @@ import './index.css'
 import App from './App.jsx'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import axios from 'axios';
 
 const theme = createTheme();
+
+axios.interceptors.request.use((request)=>{
+  if(localStorage.getItem("token")){
+    request.headers.Authorization =`Bearer ${localStorage.getItem("token")}` 
+  }
+  return request;
+})
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
