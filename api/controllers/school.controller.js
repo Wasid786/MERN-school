@@ -8,10 +8,19 @@ const jwt = require("jsonwebtoken")
 const School = require("../models/school.model");
 module.exports= {
     registerSchool : async (req,res)=>{
-        const form = new  formidable.IncomingForm();
+       
 
     try {
+                  const form = new  formidable.IncomingForm();
                 form.parse(req, async(err, fields, files)=>{
+            const school  = await School.findOne({email: fields.email[0]});
+             if(school){
+                return res.status(409).json({success: false, message:"Email is already Registered."})
+             }else{
+
+             
+
+
             const photo = files.image[0];
             let filepath = photo.filepath;
             let originalFilename = photo.originalFilename.replace(" ","_") // photo one 
@@ -26,12 +35,15 @@ module.exports= {
             const newSchool = new School({
                 school_name : fields.school_name[0],
                 email: fields.email[0],
-                owner_name:fields.owner_name[0],
+                owner_name:fields.owner_name,
+                school_image: originalFilename,
                 password: hashPassword,
+            
             })
          const savedSchool =     await newSchool.save()
             res.status(200).json({success:true, data:savedSchool, message:"School is Registered Successfully! "})
-        })
+        }
+    })
     
         
     } catch (error) {

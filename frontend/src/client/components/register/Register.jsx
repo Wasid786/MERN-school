@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import { useRef, useState } from 'react';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+import axios from 'axios'
 
 export default function Register() {
     // eslint-disable-next-line no-unused-vars
@@ -43,8 +44,25 @@ export default function Register() {
     validationSchema: registerSchema,
     onSubmit: (values)=>{
         console.log("Register Submit Values: ",values)
+        
+        const fd = new FormData();
+        fd.append("image",file, file.name);
+        fd.append("school_name", values.school_name);
+        fd.append("email", values.email);
+        fd.append("ownner_name", values.owner_name);
+        fd.append("password", values.password);
+
+
+    
+
+        axios.post(`http://localhost:5000/api/school/register`, fd).then(res=>{
+          console.log(res);
         Formik.resetForm()
         handleClearFile()
+        }).catch(e=>{
+          console.log(e)
+        })
+
     }
 
 
