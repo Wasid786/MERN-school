@@ -51,6 +51,7 @@ module.exports= {
     }
 }, 
    loginSchool :  async(req,res)=>{
+    console.log("Login ", req.body)
     try {
     const school = await School.findOne({email:req.body.email})
     if (school){
