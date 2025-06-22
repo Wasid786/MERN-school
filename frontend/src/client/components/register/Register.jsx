@@ -46,7 +46,8 @@ export default function Register() {
     onSubmit: (values)=>{
         console.log("Register Submit Values: ",values)
         
-        const fd = new FormData();
+        if(file){
+                  const fd = new FormData();
         fd.append("image",file, file.name);
         fd.append("school_name", values.school_name);
         fd.append("email", values.email);
@@ -64,8 +65,14 @@ export default function Register() {
         handleClearFile()
         }).catch(e=>{
           console.log(e)
+           setMessage(e.response.data.message)
+          setMessageType('error')
         })
 
+        }else{
+           setMessage("Please Select Image ")
+          setMessageType('error')
+        }
     }
 
 
@@ -81,17 +88,30 @@ export default function Register() {
 
   return (
     <>
-  {message &&    <Box>
-      <MessageSnackBar message={message} type={messageType} handleClose={handleMessageClose}/>
-    </Box>
-    }
+    <Box component={'div'}  sx={{background:"url(https://cdn.pixabay.com/photo/2017/08/12/21/42/back2school-2635456_1280.png)",
+      backgroundSize: "cover",
+      backgroundRepeat:"no-repeat",
+      height:"100%",
+      paddingTop:"60px",
+      paddingBottom:"60px"
+    }}> 
+
+
+  {message &&    
+      <MessageSnackBar
+  message={message}
+  messageType={messageType}
+  handleClose={handleMessageClose}
+/> }
+<Typography variant='h2' sx={{textAlign:"center"}}>Register</Typography>
   
     <Box
       component="form"
       sx={{ '& > :not(style)':  { m: 1 }, 
-      display:'flex', flexDirection:"column", width:'60vw', minWidth:'230px', margin:"auto" }}
+      display:'flex', flexDirection:"column",background : "#fff", width:'50vw', minWidth:'230px', margin:"auto" }}
       noValidate
       autoComplete="off"
+      
       onSubmit={Formik.handleSubmit}
     >
 
@@ -184,7 +204,7 @@ export default function Register() {
  
     </Box>
 
-
+</Box>
       </>
   );
 }
