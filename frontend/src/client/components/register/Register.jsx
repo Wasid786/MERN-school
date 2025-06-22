@@ -7,6 +7,7 @@ import { useRef, useState } from 'react';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import axios from 'axios'
+import MessageSnackBar from '../../../basicUtilityComponent/MessageSnackBar';
 
 export default function Register() {
     // eslint-disable-next-line no-unused-vars
@@ -57,6 +58,8 @@ export default function Register() {
 
         axios.post(`http://localhost:5000/api/school/register`, fd).then(res=>{
           console.log(res);
+          setMessage(res.data.message)
+          setMessageType('success')
         Formik.resetForm()
         handleClearFile()
         }).catch(e=>{
@@ -68,8 +71,21 @@ export default function Register() {
 
   })
 
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('success')
+
+  const handleMessageClose = ()=>{
+     setMessage('')
+  }
+
 
   return (
+    <>
+  {message &&    <Box>
+      <MessageSnackBar message={message} type={messageType} handleClose={handleMessageClose}/>
+    </Box>
+    }
+  
     <Box
       component="form"
       sx={{ '& > :not(style)':  { m: 1 }, 
@@ -167,5 +183,8 @@ export default function Register() {
  
  
     </Box>
+
+
+      </>
   );
 }
