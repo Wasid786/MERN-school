@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
@@ -23,31 +23,15 @@ export default function Gallery() {
         setSelectedSchool(null)
       }
 
-//     const style = {
-//   position: 'fixed',
-//   top: 0,
-//   left: 0,
-//   width: "100%",
-//   bgcolor: 'background.paper',
-//   border: '2px solid #000',
-//   boxShadow: 24,
-//   p: 4,
-// };
-
-
 useEffect(()=>{
 
       axios.get(`http://localhost:5000/api/school/all`).then(res=>{
           console.log(res);
           setSchools(res.data.schools)
-        //   setMessage(res.data.message)
-        //   setMessageType('success')
-        // Formik.resetForm()
+
 
         }).catch(e=>{
           console.log(e)
-        //    setMessage(e.response.data.message)
-        //   setMessageType('error')
         })
 },[])
 

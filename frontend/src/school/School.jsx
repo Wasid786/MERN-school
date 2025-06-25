@@ -139,7 +139,6 @@ export default function School() {
      {Link:"/school/schedule", component:"Schedule", icon:EventIcon},
      {Link:"/school/attendance", component:"Attendance", icon:RecentActorsIcons},
      {Link:"/school/examinations", component:"Examinations", icon:ExplicitIcons},
-     /// he use class for the notification component why ? 
      {Link:"/school/notice", component:"Notice", icon:NotificationsIcon},
 
 
@@ -235,57 +234,6 @@ export default function School() {
           ))}
         </List>
         <Divider />
-        {/* <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                        justifyContent: 'initial',
-                      }
-                    : {
-                        justifyContent: 'center',
-                      },
-                ]}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: 'center',
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: 'auto',
-                        },
-                  ]}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText
-                  primary={text}
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />

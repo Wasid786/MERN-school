@@ -41,7 +41,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* /// school routes // */}
-        {/* <Route path='school' element={<School/>}>    */}
         <Route path='school'element={<ProtectedRoute allowedRoles={['SCHOOL']}> <School/></ProtectedRoute>}>
         <Route index element={<Dashboard/>}/>
 
@@ -54,24 +53,9 @@ function App() {
         <Route path='students' element={<Students/>} />
         <Route path='subjects' element={<Subjects/>} />
         <Route path='teachers' element={<Teachers/>} />
-
-        {/* <Route path='class-details' element={<ClassDetails/>} />
-        <Route path='assign-period' element={<AssignPeriod/>} />
-        <Route path='periods' element={<Schedule/>} />
-        <Route path='attendance-student/:studentId' element={<AttendanceDetails/>} /> */}
         </Route>
 
         {/* ////// Student /////// */}
-       {/* <Route path="student" element={<ProtectedRoute allowedRoles={['STUDENT']}> <Student/></ProtectedRoute>}>
-       <Route index element={<StudentDetails/>}/>
-       <Route path="student-details"element={<StudentDetails/>}/>
-       <Route path="examinations"element={<StudentExaminatons/>}/>
-       <Route path="periods"element={<ScheduleStudent/>}/>
-       <Route path="attendance"element={<AttendanceStudent/>}/>
-       <Route path="notice"element={<NoticeStudent/>}/>
-       
-        </Route> */}
-          {/* <Route path='student' element={<Student/>}> */}
           <Route path="student" element={<ProtectedRoute allowedRoles={['STUDENT']}> <Student/></ProtectedRoute>}>
 
            <Route index element={<StudentDetails/>} />
@@ -83,7 +67,6 @@ function App() {
           </Route>
 
        {/* //// Teacher ////// */}
-         {/* <Route path='teacher' element={<Teacher/>}> */}
           <Route path="teacher" element={<ProtectedRoute allowedRoles={['TEACHER']}> <Teacher/></ProtectedRoute>}>
 
          <Route index element={<TeacherDetails/>} />

@@ -122,7 +122,6 @@ export default function Register() {
             type='file'
          name='file'
          inputRef={fileInputRef}
-        // value={Formik.values.}
         onChange={(event)=>addImage(event)}
       />
 
