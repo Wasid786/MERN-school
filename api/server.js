@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 
 // Routers import 
 const schoolRouter = require("./routers/school.router")
+const classRouter = require('./routers/class.router')
 
 const corsOption = {exposedHeaders: "Authorization" }
 
@@ -34,6 +35,7 @@ mongoose.connect("mongodb://localhost:27017/schoolManagement")
 //// Routers
 
 app.use("/api/school", schoolRouter)
+app.use("/api/class", classRouter)
 
 const PORT = process.env.PORT 
 
