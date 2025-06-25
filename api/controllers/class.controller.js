@@ -7,7 +7,8 @@ const Schedule = require('../models/schedule.model')
 module.exports = {
     createClass: async(req,res)=>{
         try {
-
+            console.log("------------School id------------- ", req.user.schoolId,)
+ 
              const newClass = new Class({
                 school: req.user.schoolId,
                 class_text: req.body.class_text,
@@ -26,6 +27,7 @@ module.exports = {
     getAllClasses:async(req,res)=>{
         try {
             const schoolId = req.user.schoolId
+
             const allClasses = await Class.find({ school:schoolId });
             res.status(200).json({success:true, message:"Success in Fetching all Classess", data:allClasses})
             
@@ -57,7 +59,11 @@ module.exports = {
             const classExamCount = (await Exam.find({class:id, school:schoolId})).length
             const classScheduleCount = (await Schedule.find({class:id, school:schoolId})).length
 
-             if((classStudentCount ===0) && (classExamCount) &&(classScheduleCount ===0 )){
+             if (
+  classStudentCount === 0 &&
+  classExamCount === 0 &&
+  classScheduleCount === 0
+) {
                 await Class.findOneAndDelete({_id:id, school:schoolId})
                    res.status(200).json({success:true, message:"Class Deleted Successfully! "})
              }else{

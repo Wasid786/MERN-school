@@ -4,8 +4,8 @@ const { createClass, getAllClasses, updateClass, deleteClassWithId } = require("
 
 const router = express.Router();
 
-router.post("/register",createClass)
-router.get("/all", getAllClasses)
+router.post("/create", authMiddleware(['SCHOOL']), createClass)
+router.get("/all", authMiddleware(['SCHOOL']), getAllClasses)
 router.patch("/update/:id", authMiddleware(['SCHOOL']), updateClass)
 router.delete("/delete/:id",authMiddleware(['SCHOOL']),deleteClassWithId)
 

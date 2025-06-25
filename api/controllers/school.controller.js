@@ -55,7 +55,7 @@ module.exports= {
     try {
     const school = await School.findOne({email:req.body.email})
     if (school){
-        const isAuth = bcrypt.compareSync(req.body.password, school.password)
+        const isAuth = await bcrypt.compareSync(req.body.password, school.password)
         if (isAuth){
             const jwtSecret = process.env.JWT_SECRET
             const token = jwt.sign({
