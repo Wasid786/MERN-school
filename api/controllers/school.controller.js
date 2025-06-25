@@ -102,7 +102,7 @@ module.exports= {
    getSchoolOwnData: async(req,res)=>{
      try {
         const id = req.user.id
-         const school = await School.findOne({_id:id});
+         const school = await School.findOne({_id:id}).select(['-password']);
          if(school){
             res.status(200).json({success: true, school})
          }else{
@@ -122,10 +122,11 @@ module.exports= {
 
                 form.parse(req, async(err, fields, files)=>{
                     const school = await School.findOne({_id:id});
-                    if (files.image){
-                        const photo = files.image[0];
+         if (files.image){
+            const photo = files.image[0];
             let filepath = photo.filepath;
             let originalFilename = photo.originalFilename.replace(" ","_") // photo one 
+
             if (school.school_image ){
             let oldImagePath =  path.join(__dirname, process.env.SCHOOL_IMAGE_PATH, school.school_image );
 
@@ -143,9 +144,12 @@ module.exports= {
                 school[field]= fields[field][0]
             })
 
-            await school.save();
-            res.status(200).json({success:true, message:"School Updated Successfully", school})
+           school['school_image'] =  originalFilename
+        }else{
+            school['school_name'] =  fields.school_name[0]
         }
+          await school.save();
+            res.status(200).json({success:true, message:"School Updated Successfully", school})
     })
 }
         

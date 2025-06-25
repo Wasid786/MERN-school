@@ -26,6 +26,8 @@ import AttendanceStudent from './student/components/attendance/AttendanceStudent
 import ExaminationsStudent from './student/components/examinations/ExaminationsStudent'
 import NoticeStudent from './student/components/notice/NoticeStudent'
 import AttendaceTeacher from './teacher/components/attendance/AttendaceTeacher'
+import ProtectedRoute from './guard/ProjectedRoute'
+import { AuthProvider } from './context/AuthContext'
 
 
 
@@ -33,11 +35,14 @@ function App() {
 
   return (
     <>
+    <AuthProvider> 
+
+  
     <BrowserRouter>
       <Routes>
         {/* /// school routes // */}
-        <Route path='school' element={<School/>}>   
-        {/* <Route path='school'element={<ProtectedRoute allowedRoles={['SCHOOL']}> <School/></ProtectedRoute>}> */}
+        {/* <Route path='school' element={<School/>}>    */}
+        <Route path='school'element={<ProtectedRoute allowedRoles={['SCHOOL']}> <School/></ProtectedRoute>}>
         <Route index element={<Dashboard/>}/>
 
         <Route path='dashboard' element={<Dashboard/>} />
@@ -66,7 +71,8 @@ function App() {
        <Route path="notice"element={<NoticeStudent/>}/>
        
         </Route> */}
-          <Route path='student' element={<Student/>}>
+          {/* <Route path='student' element={<Student/>}> */}
+          <Route path="student" element={<ProtectedRoute allowedRoles={['STUDENT']}> <Student/></ProtectedRoute>}>
 
            <Route index element={<StudentDetails/>} />
          <Route path='schedule' element={<ScheduleStudent/>} />
@@ -77,7 +83,9 @@ function App() {
           </Route>
 
        {/* //// Teacher ////// */}
-         <Route path='teacher' element={<Teacher/>}>
+         {/* <Route path='teacher' element={<Teacher/>}> */}
+          <Route path="teacher" element={<ProtectedRoute allowedRoles={['TEACHER']}> <Teacher/></ProtectedRoute>}>
+
          <Route index element={<TeacherDetails/>} />
          <Route path='schedule' element={<ScheduleTeacher/>} />
          <Route path='attendance' element={<AttendaceTeacher/>} />
@@ -94,14 +102,10 @@ function App() {
 
 
         </Route> 
-       
-
-
-
-
 
       </Routes>
     </BrowserRouter>
+      </AuthProvider>
    
     </>
   )

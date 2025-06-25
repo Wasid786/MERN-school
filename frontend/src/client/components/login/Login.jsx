@@ -5,11 +5,14 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import axios from 'axios'
 import MessageSnackBar from '../../../basicUtilityComponent/MessageSnackBar';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { loginSchema } from '../../../yupSchema/loginSchema';
+import { AuthContext } from '../../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-
+       const {login} = useContext(AuthContext);
+       const navigate = useNavigate()
 
   const initialValues  = {    
       email: "",
@@ -30,6 +33,7 @@ export default function Login() {
          const user = res.data.user;
           if(user){
             localStorage.setItem("user",JSON.stringify(user))
+            login(user);
 
           }
 
@@ -37,6 +41,7 @@ export default function Login() {
           setMessage(res.data.message)
           setMessageType('success')
         Formik.resetForm()
+        navigate('/school')
 
         }).catch(e=>{
           console.log(e)
