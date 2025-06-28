@@ -51,7 +51,7 @@ function App() {
         <Route path='notice' element={<Notice/>} />
         <Route path='schedule' element={<Schedule/>} />
         <Route path='students' element={<Students/>} />
-        <Route path='subjects' element={<Subjects/>} />
+        <Route path='subject' element={<Subjects/>} />
         <Route path='teachers' element={<Teachers/>} />
         </Route>
 
@@ -76,6 +76,16 @@ function App() {
          <Route path='notice' element={<NoticeTeacher/>} />
         </Route> 
        
+
+          {/* //// Subjects ////// */}
+          <Route path="subject" element={<ProtectedRoute allowedRoles={['SUBJECT']}> <Subjects/></ProtectedRoute>}>
+
+         {/* <Route index element={<TeacherDetails/>} />
+         <Route path='schedule' element={<ScheduleTeacher/>} />
+         <Route path='attendance' element={<AttendaceTeacher/>} />
+         <Route path='examinations' element={<ExaminationsTeacher/>} />
+         <Route path='notice' element={<NoticeTeacher/>} /> */}
+        </Route> 
 
   {/* //// Client  ////// */}
          <Route path='/' element={<Client/>}>

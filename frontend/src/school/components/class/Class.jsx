@@ -182,7 +182,7 @@ export default function Class (){
 <Button type='submit' variant='contained'>Submit</Button>
 
 {edit && 
-  <Button onClick={() => cancelEdit()} type='button' variant='contained'>Cancel</Button>
+  <Button onClick={() => cancelEdit()} type='button' variant='outlined'>Cancel</Button>
 }
 
  
