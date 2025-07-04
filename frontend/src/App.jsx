@@ -50,7 +50,7 @@ function App() {
         <Route path='examinations' element={<Examinations/>} />
         <Route path='notice' element={<Notice/>} />
         <Route path='schedule' element={<Schedule/>} />
-        <Route path='students' element={<Students/>} />
+        <Route path='student' element={<Students/>} />
         <Route path='subject' element={<Subjects/>} />
         <Route path='teachers' element={<Teachers/>} />
         </Route>

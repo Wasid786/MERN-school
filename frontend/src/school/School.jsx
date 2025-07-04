@@ -134,7 +134,7 @@ export default function School() {
     { Link:'/school', component:"Dashboard", icon:DashboardCustomizeIcon   },
      {Link:"/school/class", component:"Class", icon:FormatListNumberedIcons},
      {Link:"/school/subject", component:"Subject", icon:SubjectIcons},
-     {Link:"/school/students", component:"Students", icon:PeopleIcon},
+     {Link:"/school/student", component:"Student", icon:PeopleIcon},
      {Link:"/school/teachers", component:"Teachers", icon:PeopleAltIcon},
      {Link:"/school/schedule", component:"Schedule", icon:EventIcon},
      {Link:"/school/attendance", component:"Attendance", icon:RecentActorsIcons},
