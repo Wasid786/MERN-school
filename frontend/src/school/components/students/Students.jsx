@@ -122,7 +122,7 @@ onSubmit: async (values) => {
          console.log(e, "Error while Fetching Class Data")
       })
   }
-
+const [params, setParams] = useState({})
 
    const handleClass = (e)=>{
     setParams((prevParams)=>({
@@ -139,16 +139,16 @@ onSubmit: async (values) => {
    }
    const [students, setStudents]  = useState([])
 
-const [params, setParams] = useState({})
+
 
   const fetchStudents = ()=>{
-      axios.get(`${baseApi}/student/fetch-query/`,{params}).then(res=>{
+      axios.get(`${baseApi}/student/fetch-query`,{params}).then(res=>{
               console.log("Response Student", res)
-         setStudents(res.data.name)
+         setStudents(res.data.students)
    
          
       }).catch(e=>{
-         console.log(e.message, "Error while Fetching Data")
+         console.log(e, " Error while Fetching Data")
       })
   }
 
@@ -386,9 +386,7 @@ const [params, setParams] = useState({})
         onChange={(e)=>{
           handleSearch(e)
         }}
-       
-        onBlur={formik.handleBlur}
-      />
+        />
 
 
   <FormControl sx={{ mb: 2, width:"230px" }}>
@@ -409,35 +407,54 @@ const [params, setParams] = useState({})
     </Box>
 
    <Box component={'div'} sx={{display:"flex", flexWrap: "wrap", gap: "20px", justifyContent:"center", marginTop:"40px"}}>
-  {students && students.map(student => (
+         
+  {students && students.map(student => {
+     return (
     <Card key={student._id} sx={{ maxWidth: 345 }}>
       <CardActionArea>
         <CardMedia
           component="img"
           height="140"
-          image={student.imageUrl || "/static/images/default-student.jpg"}
+          image={`/images/uploaded/student/${student.student_image}`}
           alt={student.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {student.name}
+          <span style={{fontWeight:700}}> Name:  </span>{student.name}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Class: {student.student_class?.class_text || 'N/A'}
+         
+
+                <Typography gutterBottom variant="h5" component="div">
+        <span style={{fontWeight:700}}> Email:  </span>    {student.email}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Age: {student.age}
+                   <Typography gutterBottom variant="h5" component="div">
+           <span style={{fontWeight:700}}> Student Class:  </span> {student.student_class.class_text}
           </Typography>
-          <Button 
+                 <Typography gutterBottom variant="h5" component="div">
+           <span style={{fontWeight:700}}> Age:  </span> {student.age}
+          </Typography>     
+            <Typography gutterBottom variant="h5" component="div">
+          <span style={{fontWeight:700}}> Gender:  </span>  {student.gender}
+          </Typography>     
+            <Typography gutterBottom variant="h5" component="div">
+          <span style={{fontWeight:700}}> Guardian:  </span>  {student.guardian}
+          </Typography>
+                 <Typography gutterBottom variant="h5" component="div">
+           <span style={{fontWeight:700}}> G Phone Number:  </span> {student.guardian_phone}
+          </Typography>
+    
+         
+        </CardContent>
+        
+      </CardActionArea>
+       <Button 
             color="error"
             onClick={() => handleDelete(student._id)}
           >
             Delete
           </Button>
-        </CardContent>
-      </CardActionArea>
     </Card>
-  ))}
+  )})}
 </Box>
 
 </Box>

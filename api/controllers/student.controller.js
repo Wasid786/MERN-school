@@ -134,7 +134,8 @@ loginStudent :  async(req,res)=>{
              schoolId: student.school,
              name:student.student_name,
               image_url:student.student_image,
-                role:"STUDENT", }, jwtSecret)
+                role:"STUDENT",
+               }, jwtSecret)
 
                 res.header("Authorization", token)
             res.status(200).json({success: true, message:"Success Login", user:{
@@ -159,28 +160,38 @@ loginStudent :  async(req,res)=>{
          res.status(500).json({success: false, message: "Internal Server Error [Student Login]"})
     }
    }, 
+   
 
-getStudentWithQuery: async(req, res)=>{
-    try {
-        const filterQuery = {};
-        const schoolId  = req.user.schoolId;
-        filterQuery['school'] = schoolId;
-        if(req.query.hasOwnProperty('search')){
-           filterQuery['name']= {$regex:req.query.search, $option:"i"}
-        }
+getStudentWithQuery: async (req, res) => {
+  try {
+    const filterQuery = {};
+    const schoolId = req.user.schoolId;
 
-        if(req.query.hasOwnProperty("student_class")){
-            filterQuery['student_class'] = req.query.student_class;
-        }
-
-        const students = await Student.find(filterQuery).select(['-password']);
-        res.status(200).json({success: true, message:'Success in fetching all students', students})
-        
-    } catch (error) {
-         res.status(500).json({success: false, message: "Internal Server Error [All student Data]"})
-        
+    if (!schoolId) {
+      return res.status(401).json({ success: false, message: "Unauthorized: Missing schoolId" });
     }
-   }, 
+
+    filterQuery['school'] = schoolId;
+
+    if ('search' in req.query) {
+      filterQuery['name'] = { $regex: req.query.search, $options: "i" };
+    }
+
+    if ('student_class' in req.query) {
+      filterQuery['student_class'] = req.query.student_class;
+    }
+
+    const students = await Student.find(filterQuery).select(['-password']).populate('student_class');
+    res.status(200).json({ success: true, message: 'Success in fetching all students', students });
+
+  } catch (error) {
+    console.error("Error in getStudentWithQuery:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error [All student Data]" });
+  }
+},
+
+
+
 getStudentOwnData: async(req,res)=>{
      try {
         const id = req.user.id
@@ -201,7 +212,7 @@ getStudentOwnData: async(req,res)=>{
 
    getStudentWithId: async(req,res)=>{
      try {
-        const id = req.param.id
+        const id = req.params.id
         const schoolId = req.user.schoolId;
 
          const students = await Student.findOne({_id:id, school:schoolId}).select(['-password']);
@@ -268,7 +279,7 @@ updateStudent : async (req,res)=>{
         const id = req.params.id
         const schoolId = req.user.schoolId
         await Student.findOneAndDelete({_id:id, school:schoolId});
-         const students = Student.find({school:schoolId})
+         const students = await Student.find({school:schoolId})
 
          res.status.json({success:true, message:"Student Delete Successfully!", students})
         
