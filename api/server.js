@@ -10,6 +10,8 @@ const schoolRouter = require("./routers/school.router")
 const classRouter = require('./routers/class.router')
 const subjectRouter = require('./routers/subject.router')
 const studentRouter = require("./routers/student.router")
+const teacherRouter = require("./routers/teacher.router")
+
 
 
 const corsOption = {exposedHeaders: "Authorization" }
@@ -41,6 +43,8 @@ app.use("/api/school", schoolRouter)
 app.use("/api/class", classRouter)
 app.use("/api/subject", subjectRouter)
 app.use("/api/student", studentRouter)
+app.use("/api/teacher", teacherRouter)
+
 
 const PORT = process.env.PORT 
 

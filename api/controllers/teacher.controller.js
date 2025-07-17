@@ -5,11 +5,11 @@ const fs = require("fs")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
-const Student = require("../models/student.model");
+const Teacher = require("../models/teacher.model");
 module.exports= {
 
     
-registerStudent:  async (req, res) => {
+registerTeacher:  async (req, res) => {
   try {
     const form = new formidable.IncomingForm({ multiples: false });
 
@@ -25,11 +25,10 @@ registerStudent:  async (req, res) => {
       const requiredFields = [
         "name",
         "email",
-        "student_class",
         "age",
         "gender",
-        "guardian",
-        "guardian_phone",
+        "phone",
+        "qualification",
         "password",
       ];
 
@@ -42,8 +41,8 @@ registerStudent:  async (req, res) => {
         }
       }
 
-      const existingStudent = await Student.findOne({ email: fields.email });
-      if (existingStudent) {
+      const existingTeacher = await Teacher.findOne({ email: fields.email });
+      if (existingTeacher) {
         return res.status(409).json({
           success: false,
           message: "Email is already registered.",
@@ -55,13 +54,13 @@ registerStudent:  async (req, res) => {
       if (!imageFile) {
         return res.status(400).json({
           success: false,
-          message: "Student image is required",
+          message: "Teacher image is required",
         });
       }
 
       const photo = imageFile[0]; // formidable always returns array
       const originalFilename = photo.originalFilename.replace(/\s+/g, "_");
-      const uploadDir = path.join(__dirname, process.env.STUDENT_IMAGE_PATH);
+      const uploadDir = path.join(__dirname, process.env.TEACHER_IMAGE_PATH);
 
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
@@ -86,33 +85,32 @@ const salt = bcrypt.genSaltSync(10);
 const hashPassword = bcrypt.hashSync(password, salt);
 
 
-const newStudent = new Student({
+const newTeacher = new Teacher({
   school: req.user.schoolId,
   email: fields.email?.[0],
   name: fields.name?.[0],
-  student_class: fields.student_class?.[0],
   age: fields.age?.[0],
   gender: fields.gender?.[0],
-  guardian: fields.guardian?.[0],
-  guardian_phone: fields.guardian_phone?.[0],
-  student_image: originalFilename,
+  phone:fields.phone?.[0],
+  qualification: fields.qualification?.[0],
+  teacher_image: originalFilename,
   password: hashPassword,
 });
 
 
-      const savedStudent = await newStudent.save();
+      const savedTeacher = await newTeacher.save();
 
       res.status(200).json({
         success: true,
-        data: savedStudent,
-        message: "Student Registered Successfully!",
+        data: savedTeacher,
+        message: "Teacher Registered Successfully!",
       });
     });
   } catch (error) {
-    console.error("Student Registration Error:", error);
+    console.error("Teacher Registration Error:", error);
     res.status(500).json({
       success: false,
-      message: "Student Registration Failed",
+      message: "Teacher Registration Failed",
       error: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
@@ -120,31 +118,30 @@ const newStudent = new Student({
 
 
 
-loginStudent :  async(req,res)=>{
+loginTeacher :  async(req,res)=>{
     console.log("Login ", req.body)
     try {
-    const student = await Student.findOne({email:req.body.email})
-    if (student){
-        const isAuth = await bcrypt.compareSync(req.body.password, student.password)
+    const teacher = await Teacher.findOne({email:req.body.email})
+    if (teacher){
+        const isAuth = await bcrypt.compareSync(req.body.password, teacher.password)
         if (isAuth){
             const jwtSecret = process.env.JWT_SECRET
             const token = jwt.sign({
                
-              id:student._id,
-             schoolId: student.school,
-             name:student.student_name,
-              image_url:student.student_image,
-                role:"STUDENT",
+              id:teacher._id,
+             schoolId: teacher.school,
+             name:teacher.name,
+              image_url:teacher.teacher_image,
+                role:"TEACHER",
                }, jwtSecret)
 
                 res.header("Authorization", token)
             res.status(200).json({success: true, message:"Success Login", user:{
-                id:student._id,
-                schoolId:student.school,
-                owner_name: student.owner_name,
-                student_name: student.student_name,
-                image_url:student.student_image,
-                role:"STUDENT", 
+                id:teacher._id,
+                schoolId:teacher.school,
+                name: teacher.name,
+                image_url:teacher.teacher_image,
+                role:"TEACHER", 
             }})
 
         }else{
@@ -157,12 +154,12 @@ loginStudent :  async(req,res)=>{
     }
         
     } catch (error) {
-         res.status(500).json({success: false, message: "Internal Server Error [Student Login]"})
+         res.status(500).json({success: false, message: "Internal Server Error [Teacher Login]"})
     }
    }, 
    
 
-getStudentWithQuery: async (req, res) => {
+getTeacherWithQuery: async (req, res) => {
   try {
     const filterQuery = {};
     const schoolId = req.user.schoolId;
@@ -177,59 +174,56 @@ getStudentWithQuery: async (req, res) => {
       filterQuery['name'] = { $regex: req.query.search, $options: "i" };
     }
 
-    if ('student_class' in req.query) {
-      console.log("class" , req.query.student_class)
-      filterQuery['student_class'] = req.query.student_class;
-    }
 
-    const students = await Student.find(filterQuery).populate('student_class');
-    res.status(200).json({ success: true, message: 'Success in fetching all students', students });
+
+    const teachers = await Teacher.find(filterQuery)
+    res.status(200).json({ success: true, message: 'Success in fetching all teachers', teachers });
 
   } catch (error) {
-    console.error("Error in getStudentWithQuery:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error [All student Data]" });
+    console.error("Error in getTeacherWithQuery:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error [All Teacher Data]" });
   }
 },
 
 
 
-getStudentOwnData: async(req,res)=>{
+getTeacherOwnData: async(req,res)=>{
      try {
         const id = req.user.id
         const schoolId = req.user.schoolId;
 
-         const students = await Student.findOne({_id:id, school:schoolId}).select(['-password']);
+         const teachers = await Teacher.findOne({_id:id, school:schoolId}).select(['-password']);
          
-         if(students){
-            res.status(200).json({success: true, students})
+         if(teachers){
+            res.status(200).json({success: true, teachers})
          }else{
-        res.status(404).json({success:false, message: "Student Not Found"})
+        res.status(404).json({success:false, message: "Teacher Not Found"})
 
          }
      } catch (error) {
-        res.status(500).json({success:false, message: "Internal Server Error [OWN Student Data]."})
+        res.status(500).json({success:false, message: "Internal Server Error [OWN Teacher Data]."})
      }
    },
 
-   getStudentWithId: async(req,res)=>{
+   getTeacherWithId: async(req,res)=>{
      try {
         const id = req.params.id
         const schoolId = req.user.schoolId;
 
-         const students = await Student.findOne({_id:id, school:schoolId}).select(['-password']);
+         const teachers = await Teacher.findOne({_id:id, school:schoolId}).select(['-password']);
          
-         if(students){
-            res.status(200).json({success: true, students})
+         if(teachers){
+            res.status(200).json({success: true, teachers})
          }else{
-        res.status(404).json({success:false, message: "Student Not Found"})
+        res.status(404).json({success:false, message: "Teacher Not Found"})
 
          }
      } catch (error) {
-        res.status(500).json({success:false, message: "Internal Server Error [OWN Student Data]."})
+        res.status(500).json({success:false, message: "Internal Server Error [OWN Teacher Data]."})
      }
    },
 
-updateStudent : async (req,res)=>{
+updateTeacher : async (req,res)=>{
 
     try {
         const id = req.params.id
@@ -237,14 +231,14 @@ updateStudent : async (req,res)=>{
         const form = new  formidable.IncomingForm();
 
                 form.parse(req, async(err, fields, files)=>{
-                    const student = await Student.findOne({_id:id, school:schoolId});
+                    const teacher = await Teacher.findOne({_id:id, school:schoolId});
          if (files.image){
             const photo = files.image[0];
             let filepath = photo.filepath;
             let originalFilename = photo.originalFilename.replace(" ","_") // photo one 
 
-            if (student.student_image ){
-            let oldImagePath =  path.join(__dirname, process.env.STUDENT_IMAGE_PATH, student.student_image );
+            if (teacher.teacher_image ){
+            let oldImagePath =  path.join(__dirname, process.env.TEACHER_IMAGE_PATH, teacher.teacher_image );
 
              if(fs.existsSync(oldImagePath)){
                 fs.unlink(oldImagePath, (err)=>{
@@ -252,47 +246,47 @@ updateStudent : async (req,res)=>{
                 })
              }
             }
-            let newPath = path.join(__dirname, process.env.STUDENT_IMAGE_PATH, originalFilename );
+            let newPath = path.join(__dirname, process.env.TEACHER_IMAGE_PATH, originalFilename );
             let photoData = fs.readFileSync(filepath)
             fs.writeFileSync(newPath, photoData);
 
             Object.keys(fields).forEach((field)=>{
-                student[field]= fields[field][0]
+                teacher[field]= fields[field][0]
             })
 
-           student['student_image'] =  originalFilename
+           teacher['teacher_image'] =  originalFilename
            if(fields.password[0]){
             const salt = bcrypt.genSaltSync(10);
             const hashPassword = bcrypt.hashSync(fields.password[0], salt);
-            student['password'] = hashPassword
+            teacher['password'] = hashPassword
            }
         }else{
                  Object.keys(fields).forEach((field)=>{
-                student[field]= fields[field][0]
+                teacher[field]= fields[field][0]
               
             })
               console.log(fields)
         }
-          await student.save();
-            res.status(200).json({success:true, message:"Student Updated Successfully", student})
+          await teacher.save();
+            res.status(200).json({success:true, message:"Teacher Updated Successfully", teacher})
     })
 }
         
      catch (error) {
-        res.status(500).json({success :false, message: "Student Resgistration Failed"})
+        res.status(500).json({success :false, message: "Teacher Resgistration Failed"})
     }
 }, 
- deleteStudentWithId: async(req,res)=>{
+ deleteTeacherWithId: async(req,res)=>{
     try {
         const id = req.params.id
         const schoolId = req.user.schoolId
-        await Student.findOneAndDelete({_id:id, school:schoolId});
-         const students = await Student.find({school:schoolId})
+        await Teacher.findOneAndDelete({_id:id, school:schoolId});
+         const teachers = await Teacher.find({school:schoolId})
 
-         res.status(200).json({success:true, message:"Student Delete Successfully!", students})
+         res.status(200).json({success:true, message:"Teacher Delete Successfully!", teachers})
         
     } catch (error) {
-        res.status(500).json({success :false, message: "Student Deletion Failed"})
+        res.status(500).json({success :false, message: "Teacher Deletion Failed"})
     }
  }
 }
