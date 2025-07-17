@@ -178,10 +178,11 @@ getStudentWithQuery: async (req, res) => {
     }
 
     if ('student_class' in req.query) {
+      console.log("class" , req.query.student_class)
       filterQuery['student_class'] = req.query.student_class;
     }
 
-    const students = await Student.find(filterQuery).select(['-password']).populate('student_class');
+    const students = await Student.find(filterQuery).populate('student_class');
     res.status(200).json({ success: true, message: 'Success in fetching all students', students });
 
   } catch (error) {
@@ -231,7 +232,7 @@ getStudentOwnData: async(req,res)=>{
 updateStudent : async (req,res)=>{
 
     try {
-        const id = req.user.id
+        const id = req.params.id
         const schoolId = req.user.schoolId
         const form = new  formidable.IncomingForm();
 
@@ -260,10 +261,17 @@ updateStudent : async (req,res)=>{
             })
 
            student['student_image'] =  originalFilename
+           if(fields.password[0]){
+            const salt = bcrypt.genSaltSync(10);
+            const hashPassword = bcrypt.hashSync(fields.password[0], salt);
+            student['password'] = hashPassword
+           }
         }else{
                  Object.keys(fields).forEach((field)=>{
                 student[field]= fields[field][0]
+              
             })
+              console.log(fields)
         }
           await student.save();
             res.status(200).json({success:true, message:"Student Updated Successfully", student})

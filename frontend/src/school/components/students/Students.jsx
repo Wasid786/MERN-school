@@ -1,7 +1,7 @@
 
 import { useEffect, useRef } from "react";
 import { useState } from "react";
-import { studentsSchema } from "../../../yupSchema/studentsSchema";
+import { studentEditSchema, studentsSchema } from "../../../yupSchema/studentsSchema";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import MessageSnackBar from "../../../basicUtilityComponent/MessageSnackBar";
@@ -18,6 +18,8 @@ import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
 import {useFormik} from 'formik'
+import EditIcon  from "@mui/icons-material/Edit"
+import DeleteIcon  from "@mui/icons-material/Delete"
 
 
 export default function Students() {
@@ -26,10 +28,31 @@ export default function Students() {
 
     const [file, setFile] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
+    const [edit , setEdit ] = useState(false);
+    const [editId, setEditId] = useState(null)
 
 
+ const handleEdit = (id)=>{
+  setEdit(true);
+  setEditId(id);
+  const fileteredStudent  = students.filter(x =>x._id === id)
+  console.log("filter student ", fileteredStudent)
+  formik.setFieldValue('email',fileteredStudent[0].email )
+  formik.setFieldValue('name',fileteredStudent[0].name )
+  formik.setFieldValue('age',fileteredStudent[0].age )
+  formik.setFieldValue('student_class',fileteredStudent[0].student_class._id )
+  formik.setFieldValue('gender',fileteredStudent[0].gender )
+  formik.setFieldValue('guardian',fileteredStudent[0].guardian )
+  formik.setFieldValue('guardian_phone',fileteredStudent[0].guardian_phone )
 
+ }
+ const cancelEdit = ()=>{
 
+    setEdit(false);
+    setEditId(null)
+   formik.resetForm()
+
+ }
   const addImage = (event)=>{
     const file = event.target.files[0];
     setImageUrl(URL.createObjectURL(file))
@@ -68,12 +91,13 @@ export default function Students() {
 
 const formik = useFormik({
   initialValues,
-  validationSchema: studentsSchema,
+  validationSchema: edit ? studentEditSchema : studentsSchema,
 
 onSubmit: async (values) => {
-  if (file) {
+  if(!edit){
+    if (file) {
     const fd = new FormData();
-    fd.append("image", file);
+    fd.append("image", file, file.name);
     fd.append("name", values.name);
     fd.append("email", values.email);
     fd.append("student_class", values.student_class);
@@ -96,6 +120,33 @@ onSubmit: async (values) => {
   } else {
     setMessage("Please Select Image");
     setMessageType("error");
+  }
+  }else{
+     const fd = new FormData()
+      fd.append("name", values.name);
+    fd.append("email", values.email);
+    fd.append("student_class", values.student_class);
+    fd.append("age", values.age);
+    fd.append("gender", values.gender);
+    fd.append("guardian", values.guardian);
+    fd.append("guardian_phone", values.guardian_phone);
+    fd.append("password", values.password);
+    if(file){
+        fd.append("image", file, file.name);
+    }
+    try {
+      if(values.password){
+        fd.append("password", values.password)
+      }
+      const res = await axios.patch(`http://localhost:5000/api/student/update/${editId}`, fd);
+      setMessage(res.data.message);
+      setMessageType("success");
+      formik.resetForm();
+      handleClearFile();
+    } catch (e) {
+      setMessage(e?.response?.data?.message || "Error occurred");
+      setMessageType("error");
+    }
   }
 }
 
@@ -164,10 +215,22 @@ const [params, setParams] = useState({})
     }
   }
 
+
+
   useEffect(()=>{
       fetchClasses()
+  
+  },[])
+
+  useEffect(()=>{
       fetchStudents()
   }, [message, params])
+
+
+
+
+
+
 
   return (
     <>
@@ -188,7 +251,8 @@ const [params, setParams] = useState({})
   messageType={messageType}
   handleClose={handleMessageClose}
 /> }
-<Typography variant='h2' sx={{textAlign:"center"}}>Register Student</Typography>
+{edit ? <Typography variant='h2' sx={{textAlign:"center"}}>Edit Student</Typography> : 
+<Typography variant='h2' sx={{textAlign:"center"}}>Register Student</Typography>}
   
     <Box
       component="form"
@@ -374,7 +438,10 @@ const [params, setParams] = useState({})
   Submit
 </Button>
 
- 
+ {edit && 
+  <Button onClick={() => cancelEdit()} type='button' variant='outlined'>Cancel</Button>
+}
+
  
  
     </Box>
@@ -383,6 +450,7 @@ const [params, setParams] = useState({})
   <TextField
 
         label="Search"
+        value={params.search || ''}
         onChange={(e)=>{
           handleSearch(e)
         }}
@@ -396,7 +464,7 @@ const [params, setParams] = useState({})
     onChange={(e)=>{handleClass(e)}}
     value={params.student_class || ''}
   >
-    <MenuItem value="">All Classes</MenuItem>
+    <MenuItem value="">Select Classes</MenuItem>
     {classes.map(cls => (
       <MenuItem key={cls._id} value={cls._id}>
         {cls.class_text} ({cls.class_num})
@@ -406,11 +474,12 @@ const [params, setParams] = useState({})
 </FormControl>
     </Box>
 
-   <Box component={'div'} sx={{display:"flex", flexWrap: "wrap", gap: "20px", justifyContent:"center", marginTop:"40px"}}>
+   <Box component={'div'} 
+   sx={{display:"flex", flexWrap: "wrap", gap: "20px", justifyContent:"center", marginTop:"40px"}}>
          
   {students && students.map(student => {
      return (
-    <Card key={student._id} sx={{ maxWidth: 345 }}>
+    <Card key={student._id} sx={{ maxWidth: 345, marginRight:'10px' }}>
       <CardActionArea>
         <CardMedia
           component="img"
@@ -447,11 +516,14 @@ const [params, setParams] = useState({})
         </CardContent>
         
       </CardActionArea>
-       <Button 
+       <Button  
             color="error"
             onClick={() => handleDelete(student._id)}
           >
-            Delete
+            <DeleteIcon/>
+          </Button >
+               <Button  onClick ={()=> {handleEdit(student._id)}}>
+            <EditIcon/>
           </Button>
     </Card>
   )})}

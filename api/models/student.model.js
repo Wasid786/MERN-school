@@ -5,6 +5,7 @@ const studentSchema = new mongoose.Schema({
        name: {type: String, require:true},
        email: {type: String, require:true},
        student_class: {type: mongoose.Schema.ObjectId, ref: 'Class'},
+      //  student_class: {type: String, require:true},
 
        age: {type: String, require:true},
        gender: {type: String, require:true},
