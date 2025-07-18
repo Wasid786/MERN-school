@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import Box from "@mui/material/Box";
-import MessageSnackBar from "../../../basicUtilityComponent/MessageSnackBar";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -25,6 +24,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Grid } from "@mui/material";
 import { styled } from '@mui/material/styles';
+import Attendee from "./Attendee";
+import MessageSnackBar from "../../../basicUtilityComponent/MessageSnackBar";
+import { Link } from "react-router-dom";
 
 
 
@@ -47,8 +49,10 @@ export default function AttendanceStudentList() {
       })
   }
 const [params, setParams] = useState({})
+const [selectedClass, setSelectedClass] = useState(null)
 
    const handleClass = (e)=>{
+    setSelectedClass(e.target.value)
     setParams((prevParams)=>({
       ...prevParams,
       student_class: e.target.value || undefined
@@ -82,14 +86,7 @@ const [params, setParams] = useState({})
 
 
 
-  useEffect(()=>{
-      fetchClasses()
-  
-  },[])
 
-  useEffect(()=>{
-      fetchStudents()
-  }, [message, params])
 
 
 
@@ -144,6 +141,31 @@ const fetchAttendanceForStudent =  async(studentId)=>{
   }
 }
 
+  // eslint-disable-next-line no-unused-vars
+  const [messageType, setMessageType] = useState("success")
+
+  // eslint-disable-next-line no-unused-vars
+  const handleMessageClose = ()=>{
+    setMessage("")
+  }
+  
+
+  const handleMessage = (message, type)=>{
+      setMessage(message)
+      setMessageType(type)
+  }
+
+
+
+  useEffect(()=>{
+   
+      fetchClasses()
+  
+  },[])
+
+  useEffect(()=>{
+      fetchStudents()
+  }, [message, params])
 
 
   return (
@@ -158,16 +180,8 @@ const fetchAttendanceForStudent =  async(studentId)=>{
       paddingBottom:"60px"
     }}> 
 
-{/* 
-  {message &&    
-      <MessageSnackBar
-  message={message}
-  messageType={messageType}
-  handleClose={handleMessageClose}
-/> } */}
-{/* {edit ? <Typography variant='h2' sx={{textAlign:"center"}}>Edit Student</Typography> :  */}
+
 <Typography variant='h2' sx={{textAlign:"center"}}> Student Attendance </Typography>
-{/* } */}
 
   <Grid container spacing={2}>
         <Grid size={{ xs: 6, md: 4 }}>
@@ -200,7 +214,18 @@ const fetchAttendanceForStudent =  async(studentId)=>{
   </Select>
 </FormControl>
     </Box>
+    {message && (
+  <MessageSnackBar
+    message={message}
+    messageType={messageType}
+    handleClose={handleMessageClose}
+  />
+)}
 
+ 
+ <Box>
+  {selectedClass && <Attendee classId={selectedClass} handleMessage ={handleMessage}  message={message}/> }
+ </Box>
 
 
           </Item>
@@ -238,7 +263,7 @@ const fetchAttendanceForStudent =  async(studentId)=>{
                 {attendanceDate[student._id] !== undefined ? `${attendanceDate[student._id].toFixed(2)}%` : "No Data"}
 
               </TableCell>
-              <TableCell align="right">"View </TableCell>
+              <TableCell align="right"><Link to={`/school/attendance/${student._id}`}>Details </Link></TableCell>
             </TableRow>
           ))}
         </TableBody>

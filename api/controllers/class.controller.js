@@ -37,7 +37,21 @@ module.exports = {
         }
 
     },
-    
+     getSingleClass:async(req,res)=>{
+        try {
+            const schoolId = req.user.schoolId
+            const classId = req.params.id
+
+     const singleClass = await Class.findOne({ school: schoolId, _id: classId }).populate("attendee");
+
+            res.status(200).json({success:true, message:"Success in Fetching single Class", data:singleClass})
+            
+        } catch (error) {
+             console.log(error)
+             res.status(411).json({success:false,  message:"Server Error in Getting Class "})
+        }
+
+    },
     updateClass: async(req, res) =>{
         try {
             let id = req.params.id;
@@ -78,5 +92,7 @@ module.exports = {
             console.log(error)
              res.status(500).json({success:false,  message:"Server Error in Deleting Class "})
         }
-    }
+    },
+
+
 }
