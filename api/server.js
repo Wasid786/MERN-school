@@ -12,6 +12,8 @@ const subjectRouter = require('./routers/subject.router')
 const studentRouter = require("./routers/student.router")
 const teacherRouter = require("./routers/teacher.router")
 const scheduleRouter = require("./routers/schedule.router")
+const attendanceRouter = require("./routers/attendance.router")
+
 
 
 
@@ -46,6 +48,9 @@ app.use("/api/subject", subjectRouter)
 app.use("/api/student", studentRouter)
 app.use("/api/teacher", teacherRouter)
 app.use("/api/schedule", scheduleRouter)
+app.use("/api/attendance", attendanceRouter)
+
+
 
 
 

@@ -1,7 +1,6 @@
 import {Route, Routes, BrowserRouter} from 'react-router-dom'
 import './App.css'
 import School from './school/School'
-import Attendance from './school/components/attendance/Attendance'
 import Dashboard from './school/components/dashboard/Dashboard'
 import Schedule from './school/components/schedule/Schedule'
 import Class from './school/components/class/Class'
@@ -28,6 +27,8 @@ import NoticeStudent from './student/components/notice/NoticeStudent'
 import AttendaceTeacher from './teacher/components/attendance/AttendaceTeacher'
 import ProtectedRoute from './guard/ProjectedRoute'
 import { AuthProvider } from './context/AuthContext'
+import AttendanceStudentList from './school/components/attendance/AttendanceStudentList'
+
 
 
 
@@ -45,7 +46,7 @@ function App() {
         <Route index element={<Dashboard/>}/>
 
         <Route path='dashboard' element={<Dashboard/>} />
-        <Route path='attendance' element={<Attendance/>} />
+        <Route path='attendance' element={<AttendanceStudentList/>} />
         <Route path='class' element={<Class/>} />
         <Route path='examinations' element={<Examinations/>} />
         <Route path='notice' element={<Notice/>} />
