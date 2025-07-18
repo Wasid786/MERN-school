@@ -13,6 +13,7 @@ const studentRouter = require("./routers/student.router")
 const teacherRouter = require("./routers/teacher.router")
 const scheduleRouter = require("./routers/schedule.router")
 const attendanceRouter = require("./routers/attendance.router")
+const ExaminationRouter = require("./routers/examination.router")
 
 
 
@@ -49,6 +50,8 @@ app.use("/api/student", studentRouter)
 app.use("/api/teacher", teacherRouter)
 app.use("/api/schedule", scheduleRouter)
 app.use("/api/attendance", attendanceRouter)
+app.use("/api/examination", ExaminationRouter)
+
 
 
 
