@@ -1,7 +1,6 @@
 
 import { useEffect } from "react";
 import { useState } from "react";
-// import { studentEditSchema, studentsSchema } from "../../../yupSchema/studentsSchema";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import MessageSnackBar from "../../../basicUtilityComponent/MessageSnackBar";
@@ -12,7 +11,6 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { baseApi } from "../../../envirionment"
-// import {useFormik} from 'formik'
 
 
 
@@ -32,148 +30,14 @@ import { styled } from '@mui/material/styles';
 
 export default function AttendanceStudentList() {
 
-    // eslint-disable-next-line no-unused-vars
+
     const[classes, setClasses] = useState([])
 
-    // const [file, setFile] = useState(null);
-    // const [imageUrl, setImageUrl] = useState(null);
-    // const [edit , setEdit ] = useState(false);
-    // const [editId, setEditId] = useState(null)
-
-
-//  const handleEdit = (id)=>{
-//   setEdit(true);
-//   setEditId(id);
-//   const fileteredStudent  = students.filter(x =>x._id === id)
-//   console.log("filter student ", fileteredStudent)
-//   formik.setFieldValue('email',fileteredStudent[0].email )
-//   formik.setFieldValue('name',fileteredStudent[0].name )
-//   formik.setFieldValue('age',fileteredStudent[0].age )
-//   formik.setFieldValue('student_class',fileteredStudent[0].student_class._id )
-//   formik.setFieldValue('gender',fileteredStudent[0].gender )
-//   formik.setFieldValue('guardian',fileteredStudent[0].guardian )
-//   formik.setFieldValue('guardian_phone',fileteredStudent[0].guardian_phone )
-
-//  }
-//  const cancelEdit = ()=>{
-
-//     setEdit(false);
-//     setEditId(null)
-//    formik.resetForm()
-
-//  }
-  // const addImage = (event)=>{
-  //   const file = event.target.files[0];
-  //   setImageUrl(URL.createObjectURL(file))
-  //   setFile(file)
-
-    
-  // }
-  /// reseting image 
-  // const fileInputRef = useRef(null);
-  // const handleClearFile = ()=>{
-  //   if (fileInputRef.current){
-  //       fileInputRef.current.value = '';
-  //   }
-  //   setFile(null)
-  //   setImageUrl(null)
-  // }
-
       
 
+   // eslint-disable-next-line no-unused-vars
    const [message, setMessage] = useState('');
-    // const [messageType, setMessageType] = useState('success')
 
-
-  // const initialValues  = { 
-  //      name: "",
-  //     email: "",
-  //     student_class:"",
-  //     age: '',
-  //     gender:"",
-  //     guardian:"",
-  //     guardian_phone:"",
-  //     password: "",
-  //     confirm_password: "",
-      
-  // }
-
-// const formik = useFormik({
-//   initialValues,
-//   validationSchema: edit ? studentEditSchema : studentsSchema,
-
-// onSubmit: async (values) => {
-//   if(!edit){
-//     if (file) {
-//     const fd = new FormData();
-//     fd.append("image", file, file.name);
-//     fd.append("name", values.name);
-//     fd.append("email", values.email);
-//     fd.append("student_class", values.student_class);
-//     fd.append("age", values.age);
-//     fd.append("gender", values.gender);
-//     fd.append("guardian", values.guardian);
-//     fd.append("guardian_phone", values.guardian_phone);
-//     fd.append("password", values.password);
-
-//     try {
-//       const res = await axios.post("http://localhost:5000/api/student/register", fd);
-//       setMessage(res.data.message);
-//       setMessageType("success");
-//       formik.resetForm();
-//       handleClearFile();
-//     } catch (e) {
-//       setMessage(e?.response?.data?.message || "Error occurred");
-//       setMessageType("error");
-//     }
-//   } else {
-//     setMessage("Please Select Image");
-//     setMessageType("error");
-//   }
-//   }else{
-//      const fd = new FormData()
-//       fd.append("name", values.name);
-//     fd.append("email", values.email);
-//     fd.append("student_class", values.student_class);
-//     fd.append("age", values.age);
-//     fd.append("gender", values.gender);
-//     fd.append("guardian", values.guardian);
-//     fd.append("guardian_phone", values.guardian_phone);
-//     fd.append("password", values.password);
-//     if(file){
-//         fd.append("image", file, file.name);
-//     }
-//     try {
-//       if(values.password){
-//         fd.append("password", values.password)
-//       }
-//       const res = await axios.patch(`http://localhost:5000/api/student/update/${editId}`, fd);
-//       setMessage(res.data.message);
-//       setMessageType("success");
-//       formik.resetForm();
-//       handleClearFile();
-//     } catch (e) {
-//       setMessage(e?.response?.data?.message || "Error occurred");
-//       setMessageType("error");
-//     }
-//   }
-// }
-
-// });
-
-
-
-
-
-
-
-  
-
-
-
-  // const handleMessageClose = ()=>{
-  //    setMessage('')
-  // }
  
   const fetchClasses = ()=>{
       axios.get(`${baseApi}/class/all`).then(res=>{
