@@ -23,6 +23,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { baseApi } from '../../../envirionment';
+import MessageSnackBar from '../../../basicUtilityComponent/MessageSnackBar';
 
 
 
@@ -78,13 +79,28 @@ export default function Examinations() {
       const response = await axios.get(`${baseApi}/class/all`)
     console.log("Exam Subjects ", response)
     setClasses(response.data.data)
+
+          setMessage(response.data.message)
+          setMessageType('success')
+        formik.resetForm()
     } catch (error) {
       console.log("Exam Subjects ", error)
+         setMessage(e.response.data.message)
+          setMessageType('error')
     }
   }
 
     
   const [ selectedClass, setSelectedClass] = useState("")
+
+
+    const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('success')
+
+  const handleMessageClose = ()=>{
+     setMessage('')
+  }
+
 
 
   useEffect(()=>{
@@ -94,6 +110,13 @@ export default function Examinations() {
 
   return (
    <>
+     {message &&    
+         <MessageSnackBar
+     message={message}
+     messageType={messageType}
+     handleClose={handleMessageClose}
+   /> }
+   
 
    <Paper sx={{marginBottom:"12px"}}>
     <Box>
