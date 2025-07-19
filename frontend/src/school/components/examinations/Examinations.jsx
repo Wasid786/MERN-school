@@ -43,17 +43,36 @@ export default function Examinations() {
    const formik = useFormik({
        initialValues: initialValues,
        validationSchema: examinationSchema,
-       onSubmit: async(value)=>{
-         try {
-       const response =   await axios.post(`${baseApi}/examination/create`,{date: value.date, subjectId: value.subject, classId: selectedClass , examType:value.examType
-        })
-                 console.log("Examination new one ", response)
- 
-         } catch (error) {
-         console.log("Examination new one ", error)
-          
-         }
-       }
+ onSubmit: async (value) => {
+
+  try {
+
+    let URL = `${baseApi}/examination/create`
+
+    if(editId){
+     URL = `${baseApi}/examination/update/${editId}`
+        
+    }
+      const response = await axios.post(URL, {
+      date: value.date,
+      subjectId: value.subject,
+      classId: selectedClass,
+      examType: value.examType
+    })
+    console.log("Examination new one ", response)
+
+
+    // ✅ Show Snackbar only here
+    setMessage(response.data.message)
+    setMessageType('success')
+    formik.resetForm()
+  } catch (error) {
+    console.log("Examination new one ", error)
+    setMessage(error.response?.data?.message || "Something went wrong")
+    setMessageType('error')
+  }
+}
+
    })
 
      const [age, setAge] = useState('');
@@ -74,22 +93,19 @@ export default function Examinations() {
 
   const [classes , setClasses] = useState([])
 
-    const fetchClasses = async()=>{
+
+
+      const fetchClasses = async()=>{
     try {
       const response = await axios.get(`${baseApi}/class/all`)
-    console.log("Exam Subjects ", response)
-    setClasses(response.data.data)
-
-          setMessage(response.data.message)
-          setMessageType('success')
+        setClasses(response.data.data)
+        setSelectedClass(response.data.data[0]._id)
         formik.resetForm()
+
     } catch (error) {
-      console.log("Exam Subjects ", error)
-         setMessage(e.response.data.message)
-          setMessageType('error')
+      console.log("Exam Subjects Error  ", error)
     }
   }
-
     
   const [ selectedClass, setSelectedClass] = useState("")
 
@@ -101,12 +117,67 @@ export default function Examinations() {
      setMessage('')
   }
 
+  const fetchExaminations =  async()=>{
+ try {
+  if( selectedClass){
+    const response = await axios.get(`${baseApi}/examination/class/${selectedClass}`)
+    console.log(" fetchExaminations ", response)
+    setExaminations(response.data.examination)
+     console.log(" fetchExaminations  after:  ", response.data.examination)
+  }
+    } catch (error) {
+      console.log("Exam Subjects ", error)
+    }
+  }
+
+  const dateFormat = (dateDate)=>{
+    const date = new Date(dateDate)
+  return date.getDate()+"-"+(+date.getMonth())+"-"+date.getFullYear()
+  }
+        const [editId, setEditId ] = useState(null)
+   const handleEdit= (id)=>{
+    setEditId(id);
+    const selectedExamination = examinations.filter(x=>x._id === id);
+    formik.setFieldValue("date", selectedExamination[0].examDate)
+    formik.setFieldValue("subject", selectedExamination[0].subject._id)
+    formik.setFieldValue("examType", selectedExamination[0].examType)
+
+     
+   }
+      const handleDelete=async (id)=>{
+        if(confirm("Are you Sure you Want to Delete?")){
+          try {
+              const response = await axios.delete(`${baseApi}/examination/delete/${id}`)
+              setMessage(response.data.message)
+              setMessageType("success")
+              console.log("handleDelete", response)
+          } catch (error) {
+      console.log("Exam handleDelete ", error)
+        setMessage("Error in Deleting Examination! ")
+        setMessageType("error")
+            
+          }
+        }
+     
+   }
+
+   const handleEditCancel = ()=>{
+    setEditId(null)
+    formik.resetForm()
+   }
+
+  useEffect(()=>{
+     fetchClasses()
+
+  },[])
 
 
   useEffect(()=>{
      fetchSubjects() 
-     fetchClasses()
-  },[])
+     fetchExaminations()
+  },[message, selectedClass])
+
+
 
   return (
    <>
@@ -137,7 +208,6 @@ export default function Examinations() {
     </p>
   )}
 
-          <MenuItem value={""}>Select Class  </MenuItem>
           {classes.map(c =>{
              return(
               <MenuItem key={c._id } value={c._id }> {c.class_text} </MenuItem>
@@ -160,7 +230,7 @@ export default function Examinations() {
       
     >
 
-      <Typography variant='h4'> Add New Exam </Typography>
+    {editId ?    <Typography variant='h4'> Edit Exam </Typography>:    <Typography variant='h4'> Add New Exam </Typography>}
 <LocalizationProvider dateAdapter={AdapterDayjs}>
   <DemoContainer components={['DatePicker']}>
     <DatePicker
@@ -232,8 +302,15 @@ export default function Examinations() {
   )}
 
   <Button  sx={{marginTop:"15px"}} type='submit'variant='contained'> Submit  </Button>
+  
+ {editId && <Button  sx={{marginTop:"15px"}} type='buttton'variant='outlined' onClick={handleEditCancel}> Cancel  </Button>}
     </Box>
    </Paper>
+
+
+
+
+
   
     <TableContainer component={Paper}>
       <Box sx={{fontSize:"30px"}}>
@@ -242,27 +319,30 @@ export default function Examinations() {
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>Exam Date </TableCell>
+    <TableCell  align="right"> Exam Date </TableCell>
             <TableCell align="right">Subject </TableCell>
             <TableCell align="right">Exam Type  </TableCell>
             <TableCell align="right"> Actions </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {examinations.map((examinations) => (
-            <TableRow 
-              key={examinations.name}
+          {examinations && examinations.map((e) => {
+            return (
+                <TableRow 
+              key={e._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell align='right' scope='row' component="th">
-                {examinations.name}
+              <TableCell  align="right"> {dateFormat(e.examDate)} </TableCell>
+              <TableCell align="right">{e.subject ? e.subject.subject_name:""}</TableCell>
+              <TableCell align="right">{e.examType}</TableCell>
+              <TableCell align="right">
+                <Button variant='contained' sx={{background:'yellow'}} onClick={()=>{handleEdit(e._id)}}>Edit </Button>
+                <Button variant='contained' sx={{background:'tomato'}} onClick={()=>{handleDelete(e._id)}}>Delete </Button>
+              
               </TableCell>
-              <TableCell align="right">{examinations.calories}</TableCell>
-              <TableCell align="right">{examinations.fat}</TableCell>
-              <TableCell align="right">{examinations.carbs}</TableCell>
-              <TableCell align="right">{examinations.protein}</TableCell>
             </TableRow>
-          ))}
+            )
+})}
         </TableBody>
       </Table>
     </TableContainer>

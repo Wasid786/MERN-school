@@ -36,7 +36,7 @@ module.exports = {
         try {
             const schoolId = req.user.schoolId;
               const classId = req.params.id;
-            const examination = await Examination.find({class: classId, school: schoolId});
+            const examination = await Examination.find({class: classId, school: schoolId}).populate("subject")
           
 
             res.status(200).json({success:true, examination})
@@ -49,6 +49,7 @@ module.exports = {
         try {
             const schoolId = req.user.schoolId;
             const examinationId = req.params.id
+              const { date, subjectId, examType, classId } = req.body;
 
             await Examination.findOneAndUpdate({_id: examinationId, school: schoolId}, 
                 {$set: 
