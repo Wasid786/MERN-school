@@ -75,8 +75,10 @@ export default function Examinations() {
 
    })
 
+     // eslint-disable-next-line no-unused-vars
      const [age, setAge] = useState('');
 
+  // eslint-disable-next-line no-unused-vars
   const handleChange = (event) => {
     setAge(event.target.value);
   };
