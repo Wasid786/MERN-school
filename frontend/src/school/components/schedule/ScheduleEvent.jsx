@@ -200,17 +200,23 @@ useEffect(()=>{
 </FormControl>
 
 
+<LocalizationProvider dateAdapter={AdapterDayjs}>
+  <DemoContainer components={['DatePicker']}>
+    <DatePicker
+      label="Basic date picker"
+      value={formik.values.date ? dayjs(formik.values.date) : null}
+      onChange={(newValue) => formik.setFieldValue('date', newValue)}
+      slotProps={{ textField: { fullWidth: true } }} // This applies fullWidth to internal TextField
+    />
+  </DemoContainer>
+</LocalizationProvider>
 
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer  components={['DatePicker']}>
-     <DatePicker
-  label="Basic date picker"
-  value={formik.values.date? dayjs(formik.values.data): null}
-  onChange={(newValue) => formik.setFieldValue('date', newValue)}
-/>
+{formik.touched.date && formik.errors.date && (
+  <p style={{ color: "red", textTransform: "capitalize", marginTop: "4px" }}>
+    {formik.errors.date}
+  </p>
+)}
 
-      </DemoContainer>
-    </LocalizationProvider>
 
  
 

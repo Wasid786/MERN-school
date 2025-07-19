@@ -24,7 +24,7 @@ import ScheduleStudent from './student/components/schedule/ScheduleStudent'
 import AttendanceStudent from './student/components/attendance/AttendanceStudent'
 import ExaminationsStudent from './student/components/examinations/ExaminationsStudent'
 import NoticeStudent from './student/components/notice/NoticeStudent'
-import AttendaceTeacher from './teacher/components/attendance/AttendaceTeacher'
+import AttendanceTeacher from './teacher/components/attendance/AttendanceTeacher'
 import ProtectedRoute from './guard/ProjectedRoute'
 import { AuthProvider } from './context/AuthContext'
 import AttendanceStudentList from './school/components/attendance/AttendanceStudentList'
@@ -75,7 +75,7 @@ function App() {
 
          <Route index element={<TeacherDetails/>} />
          <Route path='schedule' element={<ScheduleTeacher/>} />
-         <Route path='attendance' element={<AttendaceTeacher/>} />
+         <Route path='attendance' element={<AttendanceTeacher/>} />
          <Route path='examinations' element={<ExaminationsTeacher/>} />
          <Route path='notice' element={<NoticeTeacher/>} />
         </Route> 
@@ -86,7 +86,7 @@ function App() {
 
          {/* <Route index element={<TeacherDetails/>} />
          <Route path='schedule' element={<ScheduleTeacher/>} />
-         <Route path='attendance' element={<AttendaceTeacher/>} />
+         <Route path='attendance' element={<AttendanceTeacher/>} />
          <Route path='examinations' element={<ExaminationsTeacher/>} />
          <Route path='notice' element={<NoticeTeacher/>} /> */}
         </Route> 

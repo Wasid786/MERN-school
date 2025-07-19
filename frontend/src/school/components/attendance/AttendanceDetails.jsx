@@ -58,7 +58,7 @@ const AttendanceDetails = () => {
 
     } catch (error) {
         console.log(error)
-        navigate('/school/attendace')
+        navigate('/school/attendance')
     }
     }
 
