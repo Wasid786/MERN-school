@@ -5,7 +5,7 @@ const { createClass, getAllClasses, updateClass, deleteClassWithId, getSingleCla
 const router = express.Router();
 
 router.post("/create", authMiddleware(['SCHOOL']), createClass)
-router.get("/all", authMiddleware(['SCHOOL']), getAllClasses)
+router.get("/all", authMiddleware(['SCHOOL','TEACHER']), getAllClasses)
 router.get("/single/:id", authMiddleware(['SCHOOL']), getSingleClass)
 
 router.patch("/update/:id", authMiddleware(['SCHOOL']), updateClass)

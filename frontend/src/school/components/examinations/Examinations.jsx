@@ -137,6 +137,8 @@ export default function Examinations() {
   return date.getDate()+"-"+(+date.getMonth())+"-"+date.getFullYear()
   }
         const [editId, setEditId ] = useState(null)
+
+        
    const handleEdit= (id)=>{
     setEditId(id);
     const selectedExamination = examinations.filter(x=>x._id === id);
