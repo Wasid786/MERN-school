@@ -41,6 +41,35 @@ module.exports = {
 
     },
 
+
+      getTeacherNotices:async(req,res)=>{
+        try {
+            const schoolId = req.user.schoolId
+
+            const allNotices = await Notice.find({ school:schoolId, audience:'teacher' });
+            res.status(200).json({success:true, message:"Success in Fetching all Notices", data:allNotices})
+            
+        } catch (error) {
+             console.log(error)
+             res.status(411).json({success:false,  message:"Server Error in Getting Notice "})
+        }
+
+    },
+      getStudentNotices:async(req,res)=>{
+        try {
+            const schoolId = req.user.schoolId
+
+            const allNotices = await Notice.find({ school:schoolId, audience:"student" });
+            res.status(200).json({success:true, message:"Success in Fetching all Notices", data:allNotices})
+            
+        } catch (error) {
+             console.log(error)
+             res.status(411).json({success:false,  message:"Server Error in Getting Notice "})
+        }
+
+    },
+
+
     updateNotice: async(req, res) =>{
         try {
             let id = req.params.id;
