@@ -29,6 +29,7 @@ import ProtectedRoute from './guard/ProjectedRoute'
 import { AuthProvider } from './context/AuthContext'
 import AttendanceStudentList from './school/components/attendance/AttendanceStudentList'
 import AttendanceDetails from './school/components/attendance/AttendanceDetails'
+import LogOut from './client/components/logout/LogOut'
 
 
 
@@ -96,6 +97,8 @@ function App() {
          <Route index element={<Home/>} />
          <Route path='login' element={<Login/>} />
          <Route path='register' element={<Register/>} />
+         <Route path='logout' element={<LogOut/>} />
+
 
 
         </Route> 

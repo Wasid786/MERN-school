@@ -29,6 +29,8 @@ import ExplicitIcons from "@mui/icons-material/Explicit"
 import RecentActorsIcons from "@mui/icons-material/RecentActors"
 import FormatListNumberedIcons from "@mui/icons-material/FormatListNumbered"
 import HomeIcon from "@mui/icons-material/Home"
+import LogoutIcon from "@mui/icons-material/Logout"
+
 
 
 
@@ -140,6 +142,8 @@ export default function School() {
      {Link:"/school/attendance", component:"Attendance", icon:RecentActorsIcons},
      {Link:"/school/examinations", component:"Examinations", icon:ExplicitIcons},
      {Link:"/school/notice", component:"Notice", icon:NotificationsIcon},
+     {Link:"/logout", component:"Log Out", icon:LogoutIcon},
+
 
 
   ]
