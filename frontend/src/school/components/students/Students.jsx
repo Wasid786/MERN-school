@@ -188,9 +188,9 @@ const [params, setParams] = useState({})
       search: e.target.value || undefined
     }))
    }
+
+
    const [students, setStudents]  = useState([])
-
-
 
   const fetchStudents = ()=>{
       axios.get(`${baseApi}/student/fetch-query`,{params}).then(res=>{

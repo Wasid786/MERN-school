@@ -5,7 +5,7 @@ const { registerStudent, getStudentOwnData, loginStudent, updateStudent, getStud
 const router = express.Router();
 
 router.post("/register",authMiddleware(['SCHOOL']), registerStudent)
-router.get("/fetch-query",authMiddleware(['SCHOOL']), getStudentWithQuery)
+router.get("/fetch-query",authMiddleware(['SCHOOL','TEACHER']), getStudentWithQuery)
 router.post("/login", loginStudent)
 router.patch("/update/:id", authMiddleware(['SCHOOL']), updateStudent)
 router.get("/fetch-single",authMiddleware(['STUDENT']),getStudentOwnData)
