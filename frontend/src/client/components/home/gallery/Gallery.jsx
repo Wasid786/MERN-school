@@ -91,8 +91,6 @@ useEffect(()=>{
           />
         </Box>
       </Modal>
-  );
-  )
 </Box>
   );
 }

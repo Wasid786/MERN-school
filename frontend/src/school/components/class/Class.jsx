@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { useFormik } from "formik";
-import { ClassSchema } from "../../../yupSchema/class.Schema";
+import { ClassSchema } from "../../../yupSchema/classSchema";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";

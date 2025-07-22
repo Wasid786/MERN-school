@@ -9,6 +9,7 @@ import { useContext, useState } from 'react';
 import { loginSchema } from '../../../yupSchema/loginSchema';
 import { AuthContext } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 export default function Login() {
        const {login} = useContext(AuthContext);
@@ -24,7 +25,18 @@ export default function Login() {
     validationSchema: loginSchema,
 
     onSubmit: (values)=>{
-        axios.post(`http://localhost:5000/api/school/login`, {...values}).then(res=>{
+      let URL ="";
+       if(role === "student"){
+        URL = `http://localhost:5000/api/student/login`
+       }else if(role === "teacher"){
+        URL = `http://localhost:5000/api/teacher/login`
+
+       }
+       else if(role === "school"){
+        URL = `http://localhost:5000/api/school/login`
+
+       }
+        axios.post(URL, {...values}).then(res=>{
          const token = res.headers.get("Authorization");
          if (token){
             localStorage.setItem("token", token)
@@ -41,7 +53,7 @@ export default function Login() {
           setMessage(res.data.message)
           setMessageType('success')
         Formik.resetForm()
-        navigate('/school')
+        navigate(`/${role}`)
 
         }).catch(e=>{
           console.log(e)
@@ -61,6 +73,8 @@ export default function Login() {
   const handleMessageClose = ()=>{
      setMessage('')
   }
+  
+  const [role , setRole ] = useState('student')
 
 
   return (
@@ -92,6 +106,23 @@ export default function Login() {
       
       onSubmit={Formik.handleSubmit}
     >
+
+ <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label"> Role </InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={role}
+          label="Age"
+          onChange={(e)=>{setRole (e.target.value)}}
+        >
+          <MenuItem value={"student"}>Student</MenuItem>
+                   <MenuItem value={"teacher"}>Teacher</MenuItem>
+          <MenuItem value={"school"}>School </MenuItem>
+
+
+        </Select>
+      </FormControl>
 
 <Typography variant='h2' sx={{textAlign:"center"}}>Login</Typography>
   

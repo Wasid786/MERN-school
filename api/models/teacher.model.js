@@ -6,6 +6,7 @@ const teacherSchema  = new mongoose.Schema({
     email: {type: String, require: true},
     name: {type: String, require: true},
     qualification: {type: String, require: true},
+    phone: {type: String, require: true},
     age: {type: String, require: true},
     gender: {type: String, require: true},
     teacher_image: {type: String, require: true},
