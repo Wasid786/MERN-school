@@ -134,8 +134,8 @@ export default function Notice (){
       onSubmit={Formik.handleSubmit}
     >
 
-{edit ? <Typography variant='h4' sx={{textAlign:"center"}}>Edit  Notice </Typography> :
- <Typography variant='h4' sx={{textAlign:"center"}}>Add New  Notice </Typography> 
+{edit ? <Typography variant='h6' sx={{textAlign:"center"}}>Edit  Notice </Typography> :
+ <Typography variant='h6' sx={{textAlign:"center"}}>Add New  Notice </Typography> 
 
 }
   

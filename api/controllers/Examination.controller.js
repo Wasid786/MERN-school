@@ -42,7 +42,7 @@ module.exports = {
             res.status(200).json({success:true, examination})
             
         } catch (error) {
-            res.status(500).json({success: false, message: "Error in Fetching Examination! By Class "})
+            res.status(500).json({success: false,error: error.message,  message: "Error in Fetching Examination! By Class "})
         }
     },
     updateExaminationWithId :async(req, res)=>{
