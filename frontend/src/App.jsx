@@ -25,7 +25,7 @@ import AttendanceStudent from './student/components/attendance/AttendanceStudent
 import ExaminationsStudent from './student/components/examinations/ExaminationsStudent'
 import NoticeStudent from './student/components/notice/NoticeStudent'
 import AttendanceTeacher from './teacher/components/attendance/AttendanceTeacher'
-import ProtectedRoute from './guard/ProjectedRoute'
+import ProtectedRoute from './guard/ProtectedRoute'
 import { AuthProvider } from './context/AuthContext'
 import AttendanceStudentList from './school/components/attendance/AttendanceStudentList'
 import AttendanceDetails from './school/components/attendance/AttendanceDetails'

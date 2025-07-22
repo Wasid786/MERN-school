@@ -11,14 +11,10 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
-
-const pages = [
-    {link:"/", component:"Home"},
-    {link:"/login", component:"Login"},
-    {link:"/register", component:"Register"}
-
-
-];
+import { useContext } from 'react';
+import { AuthContext } from '../../../context/AuthContext';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 
 function Navbar() {
@@ -34,6 +30,27 @@ const navigate = useNavigate()
     setAnchorElNav(null);
     navigate(link)
   };
+
+      const {user, authenticated} =useContext(AuthContext);
+      const [pages, setPages] = useState( [
+    {link:"/", component:"Home"},
+    {link:"/login", component:"Login"},
+    {link:"/register", component:"Register"}
+
+
+])
+useEffect(()=>{
+  if(authenticated){
+    setPages([
+          {link:"/", component:"Home"},
+    {link:"/logout", component:"Log Out"},
+    {link:`${user.role.toLowerCase()}`, component:"Dashboard"},
+
+
+    ])
+  }
+}, [])
+
 
 
   return (
