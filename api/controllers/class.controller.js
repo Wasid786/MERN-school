@@ -1,7 +1,6 @@
 const Class = require('../models/class.model')
 const Student = require('../models/student.model')
 const Exam  = require('../models/examination.model')
-const Schedule = require('../models/schedule.model')
 
 
 module.exports = {
@@ -87,12 +86,11 @@ module.exports = {
             let schoolId = req.user.schoolId;
             const classStudentCount =  (await Student.find({student_class:id, school:schoolId})).length;
             const classExamCount = (await Exam.find({class:id, school:schoolId})).length
-            const classScheduleCount = (await Schedule.find({class:id, school:schoolId})).length
 
              if (
   classStudentCount === 0 &&
-  classExamCount === 0 &&
-  classScheduleCount === 0
+  classExamCount === 0 
+
 ) {
                 await Class.findOneAndDelete({_id:id, school:schoolId})
                    res.status(200).json({success:true, message:"Class Deleted Successfully! "})

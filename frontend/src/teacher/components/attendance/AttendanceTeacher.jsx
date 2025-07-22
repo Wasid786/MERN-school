@@ -194,7 +194,7 @@ onChange={(e)=> handleAttendance({ studentId: x._id, status: e.target.value })}
 
    value={attendanceStatus[x._id] || ""}
 
-        label="Attendence " variant="filled"
+        label="Attendance " variant="filled"
         >
 
        <MenuItem value={"Present"}> Present </MenuItem>
