@@ -26,6 +26,7 @@ import ExplicitIcons from "@mui/icons-material/Explicit"
 import RecentActorsIcons from "@mui/icons-material/RecentActors"
 import HomeIcon from "@mui/icons-material/Home"
 import LogoutIcon from "@mui/icons-material/Logout"
+import ThemeButton from '../basicUtilityComponent/theme/ThemeButton';
 
 
 
@@ -145,7 +146,8 @@ export default function Student() {
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
+  <div>
+      <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -237,5 +239,6 @@ export default function Student() {
             <Outlet/>
       </Box>
     </Box>
+   </div>
   );
 }
