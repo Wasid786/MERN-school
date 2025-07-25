@@ -4,52 +4,115 @@ const path = require("path")
 const fs = require("fs")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const dotenv = require( "dotenv");
+
+dotenv.config();
 
 const School = require("../models/school.model");
 module.exports= {
-    registerSchool : async (req,res)=>{
-       
+registerSchool: async (req, res) => {
+  try {
 
-    try {
-                  const form = new  formidable.IncomingForm();
-                form.parse(req, async(err, fields, files)=>{
-            const school  = await School.findOne({email: fields.email[0]});
-             if(school){
-                return res.status(409).json({success: false, message:"Email is already Registered."})
-             }else{
+    const form = new formidable.IncomingForm({ multiples: false });
 
-             
+    form.parse(req, async (err, fields, files) => {
 
+      if (err) {
+        console.log(" Error parsing form:", err);
+        return res.status(500).json({
+          success: false,
+          message: "Error parsing form data",
+        });
+      }
 
-            const photo = files.image[0];
-            let filepath = photo.filepath;
-            let originalFilename = photo.originalFilename.replace(" ","_") // photo one 
-            let newPath = path.join(__dirname, process.env.SCHOOL_IMAGE_PATH, originalFilename );
-            let photoData = fs.readFileSync(filepath)
-            fs.writeFileSync(newPath, photoData);
+  
 
-            const salt = bcrypt.genSaltSync(10);
-            const hashPassword= bcrypt.hashSync(fields.password[0],salt)
-
-
-            const newSchool = new School({
-                school_name : fields.school_name[0],
-                email: fields.email[0],
-                owner_name:fields.owner_name,
-                school_image: originalFilename,
-                password: hashPassword,
-            
-            })
-         const savedSchool =     await newSchool.save()
-            res.status(200).json({success:true, data:savedSchool, message:"School is Registered Successfully! "})
+      const requiredFields = ["school_name", "email", "owner_name", "password"];
+      for (let key of requiredFields) {
+        if (!fields[key] || !fields[key][0]) {
+          console.log(` Missing field: ${key}`);
+          return res.status(400).json({
+            success: false,
+            message: `${key} is required`,
+          });
         }
-    })
-    
-        
-    } catch (error) {
-        res.status(500).json({success :false, message: "School Resgistration Failed"})
-    }
-}, 
+      }
+
+
+      const email = fields.email[0];
+      console.log("Checking if email already exists:", email);
+
+      const existingSchool = await School.findOne({ email });
+      if (existingSchool) {
+        console.log(" Email already registered:", email);
+        return res.status(409).json({
+          success: false,
+          message: "Email is already registered.",
+        });
+      }
+
+      console.log(" Email is unique");
+
+      const imageFile = files.image;
+      if (!imageFile) {
+        console.log(" Image file is missing");
+        return res.status(400).json({
+          success: false,
+          message: "School image is required",
+        });
+      }
+
+      const photo = imageFile[0];
+
+      const originalFilename = photo.originalFilename.replace(/\s+/g, "_");
+
+      const uploadDir = path.join(__dirname, process.env.SCHOOL_IMAGE_PATH);
+
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+        console.log(" Created upload directory");
+      }
+
+      const newPath = path.join(uploadDir, originalFilename);
+      const fileData = fs.readFileSync(photo.filepath);
+      fs.writeFileSync(newPath, fileData);
+
+      const password = fields.password[0];
+
+      const salt = bcrypt.genSaltSync(10);
+      const hashPassword = bcrypt.hashSync(password, salt);
+
+      const newSchool = new School({
+        school_name: fields.school_name[0],
+        email: email,
+        owner_name: fields.owner_name[0],
+        school_image: originalFilename,
+        password: hashPassword,
+      });
+
+
+      const savedSchool = await newSchool.save();
+      console.log("School saved to DB:", savedSchool);
+
+      res.status(200).json({
+        success: true,
+        data: savedSchool,
+        message: "School registered successfully!",
+      });
+
+      console.log(" Registration Successfully ");
+    });
+
+  } catch (error) {
+    console.log(" Error in School Registration:", error);
+    res.status(500).json({
+      success: false,
+      message: "School registration failed",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
+},
+
    loginSchool :  async(req,res)=>{
     console.log("Login ", req.body)
     try {
