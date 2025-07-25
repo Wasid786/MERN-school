@@ -39,17 +39,23 @@ const navigate = useNavigate()
 
 
 ])
-useEffect(()=>{
-  if(authenticated){
+
+useEffect(() => {
+  if (authenticated && user) {
     setPages([
-          {link:"/", component:"Home"},
-    {link:"/logout", component:"Log Out"},
-    {link:`${user.role.toLowerCase()}`, component:"Dashboard"},
-
-
-    ])
+      { link: "/", component: "Home" },
+      { link: "/logout", component: "Log Out" },
+      { link: `/${user.role.toLowerCase()}`, component: "Dashboard" },
+    ]);
+  } else {
+    setPages([
+      { link: "/", component: "Home" },
+      { link: "/login", component: "Login" },
+      { link: "/register", component: "Register" },
+    ]);
   }
-}, [])
+}, [authenticated, user]);
+
 
 
 
