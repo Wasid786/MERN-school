@@ -37,7 +37,6 @@ const navigate = useNavigate()
     {link:"/login", component:"Login"},
     {link:"/register", component:"Register"}
 
-
 ])
 
 useEffect(() => {

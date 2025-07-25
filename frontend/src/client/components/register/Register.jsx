@@ -8,6 +8,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import MessageSnackBar from '../../../basicUtilityComponent/MessageSnackBar';
+import { useTheme } from '@emotion/react';
 
 export default function Register() {
 
@@ -97,6 +98,7 @@ onSubmit: async (values) => {
     setMessage('');
   };
 
+  const theme = useTheme();
 
 
 
@@ -125,15 +127,22 @@ onSubmit: async (values) => {
 
         <Box
           component="form"
-          sx={{
-            '& > :not(style)': { m: 1 },
-            display: 'flex',
-            flexDirection: "column",
-            background: "#fff",
-            width: '50vw',
-            minWidth: '230px',
-            margin: "auto"
-          }}
+         sx={{
+  '& > :not(style)': { m: 1 },
+  display: 'flex',
+  flexDirection: "column",
+  backgroundColor: theme.palette.background.paper, 
+  color: theme.palette.text.primary,
+  width: '50vw',
+  minWidth: '230px',
+  margin: "auto",
+  padding: '20px',
+  borderRadius: '10px',
+  boxShadow: theme.palette.mode === 'dark'
+    ? '0 0 10px rgba(255,255,255,0.1)'
+    : '0 0 10px rgba(0,0,0,0.1)',
+}}
+
           noValidate
           autoComplete="off"
           onSubmit={Formik.handleSubmit}

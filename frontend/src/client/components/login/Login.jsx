@@ -10,6 +10,8 @@ import { loginSchema } from '../../../yupSchema/loginSchema';
 import { AuthContext } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { useTheme } from '@mui/material/styles'; 
+
 
 export default function Login() {
        const {login} = useContext(AuthContext);
@@ -75,6 +77,7 @@ export default function Login() {
   }
   
   const [role , setRole ] = useState('student')
+const theme = useTheme(); 
 
 
   return (
@@ -99,15 +102,29 @@ export default function Login() {
   
     <Box
       component="form"
-      sx={{ '& > :not(style)':  { m: 1 }, 
-      display:'flex', flexDirection:"column",background : "#fff", width:'50vw', minWidth:'230px', margin:"auto" }}
+    sx={{
+  '& > :not(style)': { m: 1 },
+  display: 'flex',
+  flexDirection: "column",
+  backgroundColor: theme.palette.background.paper, 
+  color: theme.palette.text.primary,
+  width: '50vw',
+  minWidth: '230px',
+  margin: "auto",
+  padding: '20px',
+  borderRadius: '10px',
+  boxShadow: theme.palette.mode === 'dark'
+    ? '0 0 10px rgba(255,255,255,0.1)'
+    : '0 0 10px rgba(0,0,0,0.1)',
+}}
+
       noValidate
       autoComplete="off"
       
       onSubmit={Formik.handleSubmit}
     >
 
- <FormControl fullWidth sx={{backgroundColor:"yellow"}}>
+ <FormControl fullWidth >
         <InputLabel id="demo-simple-select-label"> Role </InputLabel>
         <Select
           labelId="demo-simple-select-label"

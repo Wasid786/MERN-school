@@ -20,6 +20,7 @@ import CardContent from "@mui/material/CardContent";
 import {useFormik} from 'formik'
 import EditIcon  from "@mui/icons-material/Edit"
 import DeleteIcon  from "@mui/icons-material/Delete"
+import { useTheme } from "@emotion/react";
 
 
 export default function Teachers() {
@@ -223,7 +224,7 @@ const [params, setParams] = useState({})
 
 
 
-
+const  theme = useTheme()
 
   return (
     <>
@@ -247,15 +248,27 @@ const [params, setParams] = useState({})
 {edit ? <Typography variant='h2' sx={{textAlign:"center"}}>Edit Teacher</Typography> : 
 <Typography variant='h2' sx={{textAlign:"center"}}>Register Teacher</Typography>}
   
-    <Box
-      component="form"
-      sx={{ '& > :not(style)':  { m: 1 }, 
-      display:'flex', flexDirection:"column",background : "#fff", width:'50vw', minWidth:'230px', margin:"auto" }}
-      noValidate
-      autoComplete="off"
-      
-      onSubmit={formik.handleSubmit}
-    >
+  <Box
+  component="form"
+  sx={{
+    '& > :not(style)': { m: 1 },
+    display: 'flex',
+    flexDirection: "column",
+    backgroundColor: theme.palette.background.paper, 
+    color: theme.palette.text.primary,              
+    width: '50vw',
+    minWidth: '230px',
+    margin: "auto",
+    padding: '20px',
+    borderRadius: '10px',
+    boxShadow: theme.palette.mode === 'dark'
+      ? '0 0 10px rgba(255,255,255,0.1)'
+      : '0 0 10px rgba(0,0,0,0.1)',                
+  }}
+  noValidate
+  autoComplete="off"
+  onSubmit={formik.handleSubmit}
+>
 
 <Typography>  Add Teacher Picture 
 </Typography>

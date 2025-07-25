@@ -1,3 +1,4 @@
+// darkTheme.js or darkTheme.ts
 import { createTheme } from '@mui/material/styles';
 
 const darkTheme = createTheme({
@@ -9,8 +10,17 @@ const darkTheme = createTheme({
     secondary: {
       main: '#ff4081',
     },
+    background: {
+      default: '#121212',
+      paper: '#1E1E1E',
+    },
+    text: {
+      primary: '#FFFFFF',
+      secondary: '#CCCCCC',
+    },
   },
   typography: {
+    fontFamily: 'Roboto, Arial, sans-serif',
     h1: {
       fontSize: '2rem',
       fontWeight: 700,

@@ -340,7 +340,7 @@ export default function Examinations() {
               <TableCell align="right">{e.subject ? e.subject.subject_name:""}</TableCell>
               <TableCell align="right">{e.examType}</TableCell>
               <TableCell align="right">
-                <Button variant='contained' sx={{background:'yellow'}} onClick={()=>{handleEdit(e._id)}}>Edit </Button>
+                <Button variant='contained' sx={{background:'green'}} onClick={()=>{handleEdit(e._id)}}>Edit </Button>
                 <Button variant='contained' sx={{background:'tomato'}} onClick={()=>{handleDelete(e._id)}}>Delete </Button>
               
               </TableCell>

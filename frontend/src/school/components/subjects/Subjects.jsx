@@ -12,6 +12,7 @@ import DeleteIcon  from "@mui/icons-material/Delete"
 import MessageSnackBar from '../../../basicUtilityComponent/MessageSnackBar';
 import Paper from "@mui/material/Paper";
 import { subjectSchema } from "../../../yupSchema/subjectSchema";
+import { useTheme } from "@emotion/react";
 
 
 export default function Subjects (){
@@ -114,6 +115,8 @@ export default function Subjects (){
 
    },[message])
 
+   const theme = useTheme();
+
 
      return (
         <>
@@ -126,15 +129,27 @@ export default function Subjects (){
 
            <Typography variant="h3" sx={{textAlign:'center', fontWeight:"700"}}> Subjects</Typography>
 
-    <Box
-      component="form"
-      sx={{ '& > :not(style)':  { m: 1 }, 
-      display:'flex', flexDirection:"column",background : "#fff", width:'50vw', minWidth:'230px', margin:"auto" }}
-      noValidate
-      autoComplete="off"
-      
-      onSubmit={Formik.handleSubmit}
-    >
+  <Box
+  component="form"
+  sx={{
+    '& > :not(style)': { m: 1 },
+    display: 'flex',
+    flexDirection: "column",
+    backgroundColor: theme.palette.background.paper, 
+    color: theme.palette.text.primary,              
+    width: '50vw',
+    minWidth: '230px',
+    margin: "auto",
+    padding: '20px',
+    borderRadius: '10px',
+    boxShadow: theme.palette.mode === 'dark'
+      ? '0 0 10px rgba(255,255,255,0.1)'
+      : '0 0 10px rgba(0,0,0,0.1)',                
+  }}
+  noValidate
+  autoComplete="off"
+  onSubmit={Formik.handleSubmit}
+>
 
 {edit ? <Typography variant='h4' sx={{textAlign:"center"}}>Edit  subject </Typography> :
  <Typography variant='h4' sx={{textAlign:"center"}}>Add New  subject </Typography> 

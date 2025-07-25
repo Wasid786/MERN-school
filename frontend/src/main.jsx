@@ -6,6 +6,7 @@ import App from './App.jsx'
 import axios from 'axios';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { CssBaseline } from '@mui/material';
+import AppWrapper from './basicUtilityComponent/theme/AppWrapper.jsx';
 
 
 axios.interceptors.request.use((request)=>{
@@ -17,11 +18,14 @@ axios.interceptors.request.use((request)=>{
 
 createRoot(document.getElementById('root')).render(
 
-        <AuthProvider>
-  <StrictMode>
-    <CssBaseline/>
-     <App/>
-  </StrictMode>,
-        </AuthProvider>
+     <AuthProvider>
+      <StrictMode> 
+        <CssBaseline> 
+    <AppWrapper>
+      <App />
+    </AppWrapper>
+    </CssBaseline>
+     </StrictMode>
+  </AuthProvider>
 );
 
