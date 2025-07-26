@@ -1,7 +1,5 @@
 const Notice = require('../models/notice.model')
-const Student = require('../models/student.model')
-const Exam  = require('../models/examination.model')
-const Schedule = require('../models/schedule.model')
+
 
 
 module.exports = {

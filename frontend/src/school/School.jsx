@@ -139,7 +139,6 @@ export default function School() {
      {Link:"/school/subject", component:"Subject", icon:SubjectIcons},
      {Link:"/school/student", component:"Student", icon:PeopleIcon},
      {Link:"/school/teachers", component:"Teachers", icon:PeopleAltIcon},
-     {Link:"/school/schedule", component:"Schedule", icon:EventIcon},
      {Link:"/school/attendance", component:"Attendance", icon:RecentActorsIcons},
      {Link:"/school/examinations", component:"Examinations", icon:ExplicitIcons},
      {Link:"/school/notice", component:"Notice", icon:NotificationsIcon},

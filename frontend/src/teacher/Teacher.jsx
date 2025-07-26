@@ -130,7 +130,6 @@ export default function Teacher() {
     {      Link:'/', component:"Home", icon:HomeIcon   },
 
     {      Link:'/teacher', component:"Your's Details", icon:DashboardCustomizeIcon   },
-     {Link:"/teacher/schedule", component:"Schedule", icon:EventIcon},
      {Link:"/teacher/attendance", component:"Attendance", icon:RecentActorsIcons},
      {Link:"/teacher/examinations", component:"Examinations", icon:ExplicitIcons},
      {Link:"/teacher/notice", component:"Notice", icon:NotificationsIcon},
