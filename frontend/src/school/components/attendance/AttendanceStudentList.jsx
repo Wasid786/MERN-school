@@ -71,10 +71,8 @@ const [selectedClass, setSelectedClass] = useState(null)
 
   const fetchStudents = ()=>{
       axios.get(`${baseApi}/student/fetch-query`,{params}).then(res=>{
-              console.log("Response Student", res)
          setStudents(res.data.students)
          fetchAttendanceForStudents(res.data.students)
-         console.log(res);
    
          
       }).catch(e=>{
@@ -172,7 +170,6 @@ const fetchAttendanceForStudent =  async(studentId)=>{
     <>
     <Box component={'div'}  
     sx={{
-      // background:"url(https://cdn.pixabay.com/photo/2017/08/12/21/42/back2 -2635456_1280.png)",
       backgroundSize: "cover",
       backgroundRepeat:"no-repeat",
       height:"100%",

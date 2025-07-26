@@ -16,7 +16,6 @@ export default function NoticeStudent (){
 
    const fetchAllNotices = ()=>{
      axios.get(`${baseApi}/notice/student`).then(res=>{
-        console.log(notices)
        setNotices(res.data.data)
      }).catch(e=>{
       console.log("Error in Fetcing All notice Data", e) 

@@ -53,11 +53,9 @@ module.exports = {
         try {
             let id = req.params.id;
             let schoolId = req.user.schoolId;
-            // const subjectStudentCount =  (await Student.find({student_Subject:id, school:schoolId})).length;
             const subjectExamCount = (await Exam.find({subject:id, school:schoolId})).length
 
              if (
-//   subjectStudentCount === 0 &&
   subjectExamCount === 0 
 ) {
                 await Subject.findOneAndDelete({_id:id, school:schoolId})

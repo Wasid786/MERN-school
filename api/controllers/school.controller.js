@@ -18,7 +18,6 @@ registerSchool: async (req, res) => {
     form.parse(req, async (err, fields, files) => {
 
       if (err) {
-        console.log(" Error parsing form:", err);
         return res.status(500).json({
           success: false,
           message: "Error parsing form data",
@@ -30,7 +29,6 @@ registerSchool: async (req, res) => {
       const requiredFields = ["school_name", "email", "owner_name", "password"];
       for (let key of requiredFields) {
         if (!fields[key] || !fields[key][0]) {
-          console.log(` Missing field: ${key}`);
           return res.status(400).json({
             success: false,
             message: `${key} is required`,
@@ -40,22 +38,18 @@ registerSchool: async (req, res) => {
 
 
       const email = fields.email[0];
-      console.log("Checking if email already exists:", email);
 
       const existingSchool = await School.findOne({ email });
       if (existingSchool) {
-        console.log(" Email already registered:", email);
         return res.status(409).json({
           success: false,
           message: "Email is already registered.",
         });
       }
 
-      console.log(" Email is unique");
 
       const imageFile = files.image;
       if (!imageFile) {
-        console.log(" Image file is missing");
         return res.status(400).json({
           success: false,
           message: "School image is required",
@@ -70,7 +64,6 @@ registerSchool: async (req, res) => {
 
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
-        console.log(" Created upload directory");
       }
 
       const newPath = path.join(uploadDir, originalFilename);
@@ -92,7 +85,6 @@ registerSchool: async (req, res) => {
 
 
       const savedSchool = await newSchool.save();
-      console.log("School saved to DB:", savedSchool);
 
       res.status(200).json({
         success: true,
@@ -114,7 +106,6 @@ registerSchool: async (req, res) => {
 },
 
    loginSchool :  async(req,res)=>{
-    console.log("Login ", req.body)
     try {
     const school = await School.findOne({email:req.body.email})
     if (school){

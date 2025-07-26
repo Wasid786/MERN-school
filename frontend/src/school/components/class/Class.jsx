@@ -19,7 +19,6 @@ export default function Class (){
     const [classes, setClasses] = useState([])
     const [edit, setEdit] = useState(false)
     const [editId, setEditId] = useState(null)
-//  const [editingClass, setEditingClass] = useState(null)
 
 
       const [message, setMessage] = useState('');
@@ -33,27 +32,16 @@ export default function Class (){
     
     
     const handleEdit = (id, class_text, class_num) => {
-        console.log("handle edit ", id)
         setEdit(true);
          setEditId(id);
         Formik.setFieldValue("class_text",class_text)
         Formik.setFieldValue("class_num",class_num)
 
-        // const classToEdit = classes.find(c => c._id === id)
-        // if (classToEdit) {
-        //     Formik.setValues({
-        //         class_text: classToEdit.class_text,
-        //         class_num: classToEdit.class_num
-        //     })
-        //     setEditingClass(id)
-        //     setEdit(true)
-        // }
+  
     }
 
    const cancelEdit = () => {
-        // setEdit(false)
-        // setEditingClass(null)
-        // Formik.resetForm()
+ 
              setEdit(false);
              setEditId(null)
         Formik.setFieldValue("class_text","")
@@ -61,15 +49,12 @@ export default function Class (){
     }
 
            const handleDelete = (id)=>{
-        console.log("handle Delete ")
         axios.delete(`${baseApi}/class/delete/${id}`).then(res=>{
           setMessage(res.data.message)
           setMessageType("success")
-            console.log("---------handle Delete---------- ",res.data.message)
         }).catch(e=>{
           setMessage("Error in delete",e)
           setMessageType('error')
-           console.log("---------handle Delete---------- ",e.message)
         })
     }
 
@@ -78,12 +63,10 @@ export default function Class (){
       initialValues: {class_text: "", class_num:""},
       validationSchema: ClassSchema,
       onSubmit:(values)=>{
-         console.log(values)
           
          if(edit){
 
                   axios.patch(`${baseApi}/class/update/${editId}`, {...values}).then(res=>{
-          console.log("Class add Response", res) 
           setMessage(res.data.message )
           setMessageType('success')
           
@@ -218,7 +201,6 @@ export default function Class (){
        </Typography> </Box>
       
        <Box component={'div'}> 
-        {/* <Button onClick={()=>handleEdit(x._id)}> */}
         <Button onClick={()=>{handleEdit(x._id, x.class_text,x.class_num)}}>
 
           <EditIcon/> 

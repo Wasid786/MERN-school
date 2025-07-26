@@ -92,7 +92,6 @@ const fetchStudentDetails = async () => {
     }
 
     setStudentId(id);
-    console.log("got studentId =", id);
   } catch (err) {
     console.error(err);
   }

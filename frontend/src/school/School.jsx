@@ -22,7 +22,6 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize"
 import PeopleIcon from "@mui/icons-material/People"
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt"
-import EventIcon from "@mui/icons-material/Event"
 import NotificationsIcon from "@mui/icons-material/Notifications"
 import SubjectIcons from "@mui/icons-material/Subject"
 import ExplicitIcons from "@mui/icons-material/Explicit"

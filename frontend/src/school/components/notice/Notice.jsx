@@ -32,7 +32,6 @@ export default function Notice (){
     
     
     const handleEdit = (id, title, message, audience) => {
-        console.log("handle edit ", id)
         setEdit(true);
          setEditId(id);
         Formik.setFieldValue("title",title)
@@ -49,15 +48,12 @@ export default function Notice (){
     }
 
            const handleDelete = (id)=>{
-        console.log("handle Delete ")
         axios.delete(`${baseApi}/notice/delete/${id}`).then(res=>{
           setMessage(res.data.message)
           setMessageType("success")
-            console.log("---------handle Delete---------- ",res.data.message)
         }).catch(e=>{
           setMessage("Error in delete",e)
           setMessageType('error')
-           console.log("---------handle Delete---------- ",e.message)
         })
     }
 
@@ -71,7 +67,6 @@ export default function Notice (){
          if(edit){
 
                   axios.patch(`${baseApi}/notice/update/${editId}`, {...values}).then(res=>{
-          console.log("Notice add Response", res) 
           setMessage(res.data.message )
           setMessageType('success')
           
@@ -83,7 +78,6 @@ export default function Notice (){
          Formik.resetForm();
          }else{
               axios.post(`${baseApi}/notice/create`, {...values}).then(res=>{
-          console.log("notice add Response", res) 
           setMessage(res.data.message )
           setMessageType('success')
           

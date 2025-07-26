@@ -5,7 +5,7 @@ const Notice = require('../models/notice.model')
 module.exports = {
     createNotice: async(req,res)=>{
         try {
-            console.log("------------Noticess id------------- ", req.user.schoolId,)
+            console.log("------------school id------------- ", req.user.schoolId,)
 
             const {title, message, audience} = req.body 
  

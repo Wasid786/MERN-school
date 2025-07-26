@@ -43,9 +43,7 @@ export default function ExaminationsTeacher() {
  try {
   if( selectedClass){
     const response = await axios.get(`${baseApi}/examination/class/${selectedClass}`)
-    console.log(" fetchExaminations ", response)
     setExaminations(response.data.examination)
-     console.log(" fetchExaminations  after:  ", response.data.examination)
   }
     } catch (error) {
       console.log("Exam Subjects ", error)

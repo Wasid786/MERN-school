@@ -37,7 +37,6 @@ export default function Teachers() {
   setEdit(true);
   setEditId(id);
   const fileteredTeacher  = teachers.filter(x =>x._id === id)
-  console.log("filter teacher ", fileteredTeacher)
   formik.setFieldValue('email',fileteredTeacher[0].email )
   formik.setFieldValue('name',fileteredTeacher[0].name )
   formik.setFieldValue('age',fileteredTeacher[0].age )
@@ -188,7 +187,6 @@ const [params, setParams] = useState({})
 
   const fetchTeachers = ()=>{
       axios.get(`${baseApi}/teacher/fetch-query`,{params}).then(res=>{
-              console.log("Response Teacher", res)
          setTeachers(res.data.teachers)
    
          

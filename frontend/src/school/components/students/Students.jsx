@@ -37,7 +37,6 @@ export default function Students() {
   setEdit(true);
   setEditId(id);
   const fileteredStudent  = students.filter(x =>x._id === id)
-  console.log("filter student ", fileteredStudent)
   formik.setFieldValue('email',fileteredStudent[0].email )
   formik.setFieldValue('name',fileteredStudent[0].name )
   formik.setFieldValue('age',fileteredStudent[0].age )
@@ -195,7 +194,6 @@ const [params, setParams] = useState({})
 
   const fetchStudents = ()=>{
       axios.get(`${baseApi}/student/fetch-query`,{params}).then(res=>{
-              console.log("Response Student", res)
          setStudents(res.data.students)
    
          
@@ -237,7 +235,6 @@ const theme = useTheme();
     <>
     <Box component={'div'}  
     sx={{
-      // background:"url(https://cdn.pixabay.com/photo/2017/08/12/21/42/back2 -2635456_1280.png)",
       backgroundSize: "cover",
       backgroundRepeat:"no-repeat",
       height:"100%",

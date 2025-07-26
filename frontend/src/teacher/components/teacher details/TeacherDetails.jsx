@@ -19,7 +19,6 @@ export default function TeacherDetails() {
 const fetchTeacherDetails = async () => {
   const response = await axios.get(`${baseApi}/teacher/fetch-single`);
   setTeacherDetails(response.data.teachers)
-  console.log("teacher details", response.data.teachers);
 }
 
 

@@ -67,7 +67,6 @@ export default function Dashboard (){
 
    const fetchSchool = ()=>{
       axios.get(`${baseApi}/school/fetch-single`).then(resp=>{
-         console.log(resp);
          setSchool(resp.data.school)
          setSchoolName(resp.data.school.school_name)
       }).catch(e=>{
@@ -109,7 +108,6 @@ export default function Dashboard (){
             type='file'
          name='file'
          inputRef={fileInputRef}
-        // value={Formik.values.}
         onChange={(event)=>addImage(event)}
       />
 

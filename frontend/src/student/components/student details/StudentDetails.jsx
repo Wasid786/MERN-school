@@ -19,7 +19,6 @@ export default function StudentDetails() {
 const fetchStudentDetails = async () => {
   const response = await axios.get(`${baseApi}/student/fetch-single`);
   setStudentDetails(response.data.students)
-  console.log("student details", response.data.students);
 }
 
 

@@ -70,8 +70,7 @@ registerTeacher:  async (req, res) => {
       const fileData = fs.readFileSync(photo.filepath);
       fs.writeFileSync(newPath, fileData);
 
-console.log("Raw password:", fields.password);
-console.log("Type of password:", typeof fields.password);
+
 const password = fields.password?.[0];
 
 if (!password || typeof password !== "string") {
@@ -119,7 +118,6 @@ const newTeacher = new Teacher({
 
 
 loginTeacher :  async(req,res)=>{
-    console.log("Login ", req.body)
     try {
     const teacher = await Teacher.findOne({email:req.body.email})
     if (teacher){
@@ -265,7 +263,6 @@ updateTeacher : async (req,res)=>{
                 teacher[field]= fields[field][0]
               
             })
-              console.log(fields)
         }
           await teacher.save();
             res.status(200).json({success:true, message:"Teacher Updated Successfully", teacher})

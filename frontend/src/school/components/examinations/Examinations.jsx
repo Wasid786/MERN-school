@@ -59,10 +59,8 @@ export default function Examinations() {
       classId: selectedClass,
       examType: value.examType
     })
-    console.log("Examination new one ", response)
 
 
-    // ✅ Show Snackbar only here
     setMessage(response.data.message)
     setMessageType('success')
     formik.resetForm()
@@ -125,7 +123,6 @@ export default function Examinations() {
     const response = await axios.get(`${baseApi}/examination/class/${selectedClass}`)
     console.log(" fetchExaminations ", response)
     setExaminations(response.data.examination)
-     console.log(" fetchExaminations  after:  ", response.data.examination)
   }
     } catch (error) {
       console.log("Exam Subjects ", error)

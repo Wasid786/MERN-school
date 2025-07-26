@@ -54,10 +54,8 @@ export default function Register() {
     initialValues,
     validationSchema: registerSchema,
 onSubmit: async (values) => {
-  console.log(" Form submitted with values:", values);
 
   if (!file) {
-    console.log(" No file selected");
     setMessage("Please select an image");
     setMessageType("error");
     return;
@@ -75,7 +73,6 @@ onSubmit: async (values) => {
 
     const res = await axios.post("http://localhost:5000/api/school/register", fd);
 
-    console.log(" Response received from backend:", res);
     setMessage(res.data.message);
     setMessageType("success");
     Formik.resetForm();
@@ -94,7 +91,6 @@ onSubmit: async (values) => {
   });
 
   const handleMessageClose = () => {
-    console.log(" Closing snackbar");
     setMessage('');
   };
 

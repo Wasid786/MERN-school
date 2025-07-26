@@ -51,7 +51,6 @@ export default function Login() {
 
           }
 
-          console.log(res);
           setMessage(res.data.message)
           setMessageType('success')
         Formik.resetForm()

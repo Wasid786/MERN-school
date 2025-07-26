@@ -22,11 +22,11 @@ markAttendance: async (req, res) => {
     await newAttendance.save();
     res.status(201).json(newAttendance);
   } catch (error) {
-    console.error("Error in markAttendance:", error); // log actual error
+    console.error("Error in markAttendance:", error); 
     res.status(500).json({
       success: false,
       message: "Error in marking Attendance",
-      error: error.message // include error message in response
+      error: error.message 
     });
   }
 },

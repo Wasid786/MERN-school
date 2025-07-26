@@ -19,7 +19,6 @@ export default function Subjects (){
     const [subjects, setSubjects] = useState([])
     const [edit, setEdit] = useState(false)
     const [editId, setEditId] = useState(null)
-//  const [editingsubject, setEditingsubject] = useState(null)
 
 
       const [message, setMessage] = useState('');
@@ -33,7 +32,6 @@ export default function Subjects (){
     
     
     const handleEdit = (id, subject_name, subject_codename) => {
-        console.log("handle edit ", id)
         setEdit(true);
          setEditId(id);
         Formik.setFieldValue("subject_name",subject_name)
@@ -43,9 +41,7 @@ export default function Subjects (){
     }
 
    const cancelEdit = () => {
-        // setEdit(false)
-        // setEditingsubject(null)
-        // Formik.resetForm()
+      
              setEdit(false);
              setEditId(null)
         Formik.setFieldValue("subject_name","")
@@ -53,15 +49,12 @@ export default function Subjects (){
     }
 
            const handleDelete = (id)=>{
-        console.log("handle Delete ")
         axios.delete(`${baseApi}/subject/delete/${id}`).then(res=>{
           setMessage(res.data.message)
           setMessageType("success")
-            console.log("---------handle Delete---------- ",res.data.message)
         }).catch(e=>{
           setMessage("Error in delete",e)
           setMessageType('error')
-           console.log("---------handle Delete---------- ",e.message)
         })
     }
 
@@ -75,7 +68,6 @@ export default function Subjects (){
          if(edit){
 
                   axios.patch(`${baseApi}/subject/update/${editId}`, {...values}).then(res=>{
-          console.log("subject add Response", res) 
           setMessage(res.data.message )
           setMessageType('success')
           
@@ -87,7 +79,6 @@ export default function Subjects (){
          Formik.resetForm();
          }else{
               axios.post(`${baseApi}/subject/create`, {...values}).then(res=>{
-          console.log("subject add Response", res) 
           setMessage(res.data.message )
           setMessageType('success')
           

@@ -23,16 +23,20 @@ export default function Gallery() {
         setSelectedSchool(null)
       }
 
-useEffect(()=>{
-
-      axios.get(`http://localhost:5000/api/school/all`).then(res=>{
-          console.log(res);
+      const fetchAllSchool =async()=>{
+          const response = await axios.get(`http://localhost:5000/api/school/all`).then(res=>{
           setSchools(res.data.schools)
+          console.log(response)
 
 
         }).catch(e=>{
           console.log(e)
         })
+      }
+
+useEffect(()=>{
+
+   fetchAllSchool()
 },[])
 
   return (

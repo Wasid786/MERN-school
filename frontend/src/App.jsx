@@ -86,10 +86,6 @@ function App() {
           {/* //// Subjects ////// */}
           <Route path="subject" element={<ProtectedRoute allowedRoles={['SUBJECT']}> <Subjects/></ProtectedRoute>}>
 
-         {/* <Route index element={<TeacherDetails/>} />
-         <Route path='attendance' element={<AttendanceTeacher/>} />
-         <Route path='examinations' element={<ExaminationsTeacher/>} />
-         <Route path='notice' element={<NoticeTeacher/>} /> */}
         </Route> 
 
   {/* //// Client  ////// */}

@@ -71,8 +71,7 @@ registerStudent:  async (req, res) => {
       const fileData = fs.readFileSync(photo.filepath);
       fs.writeFileSync(newPath, fileData);
 
-console.log("Raw password:", fields.password);
-console.log("Type of password:", typeof fields.password);
+
 const password = fields.password?.[0];
 
 if (!password || typeof password !== "string") {
@@ -121,7 +120,6 @@ const newStudent = new Student({
 
 
 loginStudent :  async(req,res)=>{
-    console.log("Login ", req.body)
     try {
     const student = await Student.findOne({email:req.body.email})
     if (student){
@@ -178,7 +176,6 @@ getStudentWithQuery: async (req, res) => {
     }
 
     if ('student_class' in req.query) {
-      console.log("class" , req.query.student_class)
       filterQuery['student_class'] = req.query.student_class;
     }
 
@@ -271,7 +268,6 @@ updateStudent : async (req,res)=>{
                 student[field]= fields[field][0]
               
             })
-              console.log(fields)
         }
           await student.save();
             res.status(200).json({success:true, message:"Student Updated Successfully", student})
