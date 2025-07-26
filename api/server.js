@@ -53,7 +53,12 @@ app.use("/api/examination", ExaminationRouter)
 app.use("/api/notice", NoticeRouter)
 
 
-
+app.get('/', (req, res)=>{
+    res.send({
+        activeStatus:true,
+        error: false,
+    })
+})
 
 
 
