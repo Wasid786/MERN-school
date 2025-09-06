@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import MessageSnackBar from '../../../basicUtilityComponent/MessageSnackBar';
 import { useTheme } from '@emotion/react';
+import { baseApi } from '../../../envirionment';
 
 export default function Register() {
 
@@ -71,7 +72,7 @@ onSubmit: async (values) => {
 
   try {
 
-    const res = await axios.post("http://localhost:5000/api/school/register", fd);
+    const res = await axios.post(`${baseApi}/school/register`, fd);
 
     setMessage(res.data.message);
     setMessageType("success");

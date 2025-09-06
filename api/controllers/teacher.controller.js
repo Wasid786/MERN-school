@@ -89,7 +89,7 @@ registerTeacher: async (req, res) => {
         gender: fields.gender?.[0],
         phone: fields.phone?.[0],
         qualification: fields.qualification?.[0],
-        teacher_image: cloudinaryResult.secure_url, // ✅ Cloudinary URL
+        teacher_image: cloudinaryResult.secure_url, // Cloudinary URL
         password: hashPassword,
       });
 

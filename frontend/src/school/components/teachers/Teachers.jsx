@@ -106,7 +106,7 @@ onSubmit: async (values) => {
     fd.append("password", values.password);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/teacher/register", fd);
+      const res = await axios.post(`${baseApi}/teacher/register`, fd);
       setMessage(res.data.message);
       setMessageType("success");
       formik.resetForm();
@@ -136,7 +136,7 @@ onSubmit: async (values) => {
       if(values.password){
         fd.append("password", values.password)
       }
-      const res = await axios.patch(`http://localhost:5000/api/teacher/update/${editId}`, fd);
+      const res = await axios.patch(`${baseApi}/teacher/update/${editId}`, fd);
       setMessage(res.data.message);
       setMessageType("success");
       formik.resetForm();

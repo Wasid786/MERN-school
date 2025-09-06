@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { baseApi } from '../../../../envirionment';
 
 export default function Gallery() {
   const [open, setOpen] = useState(false);
@@ -23,7 +24,7 @@ export default function Gallery() {
 
   const fetchAllSchool = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/school/all`);
+      const response = await axios.get(`${baseApi}/school/all`);
       setSchools(response.data.schools);
       console.log(response.data.schools);
     } catch (e) {

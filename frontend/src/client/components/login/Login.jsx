@@ -11,6 +11,7 @@ import { AuthContext } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useTheme } from '@mui/material/styles'; 
+import { baseApi } from '../../../envirionment';
 
 
 export default function Login() {
@@ -29,13 +30,13 @@ export default function Login() {
     onSubmit: (values)=>{
       let URL ="";
        if(role === "student"){
-        URL = `http://localhost:5000/api/student/login`
+        URL = `${baseApi}/student/login`
        }else if(role === "teacher"){
-        URL = `http://localhost:5000/api/teacher/login`
+        URL = `${baseApi}/teacher/login`
 
        }
        else if(role === "school"){
-        URL = `http://localhost:5000/api/school/login`
+        URL = `${baseApi}/school/login`
 
        }
         axios.post(URL, {...values}).then(res=>{

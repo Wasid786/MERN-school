@@ -52,7 +52,7 @@ registerStudent: async (req, res) => {
           });
         }
 
-        // ✅ Handle student image via Cloudinary
+        //  Handle student image via Cloudinary
         const imageFile = files.image;
         if (!imageFile) {
           return res.status(400).json({
@@ -69,12 +69,12 @@ registerStudent: async (req, res) => {
           unique_filename: false,
         });
 
-        // ✅ Hash password
+        // Hash password
         const password = fields.password[0];
         const salt = bcrypt.genSaltSync(10);
         const hashPassword = bcrypt.hashSync(password, salt);
 
-        // ✅ Save student with Cloudinary image URL
+        // Save student with Cloudinary image URL
         const newStudent = new Student({
           school: req.user.schoolId,
           email,
@@ -84,7 +84,7 @@ registerStudent: async (req, res) => {
           gender: fields.gender[0],
           guardian: fields.guardian[0],
           guardian_phone: fields.guardian_phone[0],
-          student_image: cloudinaryResult.secure_url, // ✅ store Cloudinary URL
+          student_image: cloudinaryResult.secure_url, //  store Cloudinary URL
           password: hashPassword,
         });
 
