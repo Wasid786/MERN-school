@@ -17,11 +17,17 @@ module.exports = {
              await newClass.save();
              res.status(200).json({success: true, message:"Successfully Create Class!"})
 
+             if (!req.user || !req.user.schoolId) {
+    return res.status(400).json({ success: false, message: "School ID missing!" });
+}
+
+
             
-        } catch (error) {
-                   console.log(error)
-            res.status(500).json({success:false,  message:"Server error creating Class!"})
-        }
+        }  catch (error) {
+    console.error("Error creating class:", error.message, error);
+    res.status(500).json({success:false, message:error.message})
+}
+
     },
     getAllClasses:async(req,res)=>{
         try {
