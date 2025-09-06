@@ -4,118 +4,108 @@ const path = require("path")
 const fs = require("fs")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const cloudinary = require("../utils/cloudnary"); 
 
 const Student = require("../models/student.model");
 module.exports= {
 
     
-registerStudent:  async (req, res) => {
-  try {
-    const form = new formidable.IncomingForm({ multiples: false });
+registerStudent: async (req, res) => {
+    try {
+      const form = new formidable.IncomingForm({ multiples: false });
 
-    form.parse(req, async (err, fields, files) => {
-      if (err) {
-        return res.status(500).json({
-          success: false,
-          message: "Error parsing form data",
-        });
-      }
-
-      // Required fields check
-      const requiredFields = [
-        "name",
-        "email",
-        "student_class",
-        "age",
-        "gender",
-        "guardian",
-        "guardian_phone",
-        "password",
-      ];
-
-      for (let key of requiredFields) {
-        if (!fields[key]) {
-          return res.status(400).json({
+      form.parse(req, async (err, fields, files) => {
+        if (err) {
+          return res.status(500).json({
             success: false,
-            message: `${key} is required`,
+            message: "Error parsing form data",
           });
         }
-      }
 
-      const existingStudent = await Student.findOne({ email: fields.email });
-      if (existingStudent) {
-        return res.status(409).json({
-          success: false,
-          message: "Email is already registered.",
+        // Required fields check
+        const requiredFields = [
+          "name",
+          "email",
+          "student_class",
+          "age",
+          "gender",
+          "guardian",
+          "guardian_phone",
+          "password",
+        ];
+
+        for (let key of requiredFields) {
+          if (!fields[key] || !fields[key][0]) {
+            return res.status(400).json({
+              success: false,
+              message: `${key} is required`,
+            });
+          }
+        }
+
+        const email = fields.email[0];
+        const existingStudent = await Student.findOne({ email });
+        if (existingStudent) {
+          return res.status(409).json({
+            success: false,
+            message: "Email is already registered.",
+          });
+        }
+
+        // ✅ Handle student image via Cloudinary
+        const imageFile = files.image;
+        if (!imageFile) {
+          return res.status(400).json({
+            success: false,
+            message: "Student image is required",
+          });
+        }
+
+        const photo = imageFile[0]; // formidable gives array
+
+        const cloudinaryResult = await cloudinary.uploader.upload(photo.filepath, {
+          folder: "student_images", // cloudinary folder for students
+          use_filename: true,
+          unique_filename: false,
         });
-      }
 
-      // Check and handle image file
-      const imageFile = files.image;
-      if (!imageFile) {
-        return res.status(400).json({
-          success: false,
-          message: "Student image is required",
+        // ✅ Hash password
+        const password = fields.password[0];
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync(password, salt);
+
+        // ✅ Save student with Cloudinary image URL
+        const newStudent = new Student({
+          school: req.user.schoolId,
+          email,
+          name: fields.name[0],
+          student_class: fields.student_class[0],
+          age: fields.age[0],
+          gender: fields.gender[0],
+          guardian: fields.guardian[0],
+          guardian_phone: fields.guardian_phone[0],
+          student_image: cloudinaryResult.secure_url, // ✅ store Cloudinary URL
+          password: hashPassword,
         });
-      }
 
-      const photo = imageFile[0]; // formidable always returns array
-      const originalFilename = photo.originalFilename.replace(/\s+/g, "_");
-      const uploadDir = path.join(__dirname, process.env.STUDENT_IMAGE_PATH);
+        const savedStudent = await newStudent.save();
 
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-      }
-
-      const newPath = path.join(uploadDir, originalFilename);
-      const fileData = fs.readFileSync(photo.filepath);
-      fs.writeFileSync(newPath, fileData);
-
-
-const password = fields.password?.[0];
-
-if (!password || typeof password !== "string") {
-  return res.status(400).json({
-    success: false,
-    message: "Invalid password. Must be a non-empty string.",
-  });
-}
-
-const salt = bcrypt.genSaltSync(10);
-const hashPassword = bcrypt.hashSync(password, salt);
-
-
-const newStudent = new Student({
-  school: req.user.schoolId,
-  email: fields.email?.[0],
-  name: fields.name?.[0],
-  student_class: fields.student_class?.[0],
-  age: fields.age?.[0],
-  gender: fields.gender?.[0],
-  guardian: fields.guardian?.[0],
-  guardian_phone: fields.guardian_phone?.[0],
-  student_image: originalFilename,
-  password: hashPassword,
-});
-
-
-      const savedStudent = await newStudent.save();
-
-      res.status(200).json({
-        success: true,
-        data: savedStudent,
-        message: "Student Registered Successfully!",
+        res.status(200).json({
+          success: true,
+          data: savedStudent,
+          message: "Student Registered Successfully!",
+        });
       });
-    });
-  } catch (error) {
-    console.error("Student Registration Error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Student Registration Failed",
-      error: process.env.NODE_ENV === "development" ? error.message : undefined,
-    });
-  }
-},
+    } catch (error) {
+      console.error("Student Registration Error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Student Registration Failed",
+        error:
+          process.env.NODE_ENV === "development" ? error.message : undefined,
+      });
+    }
+  },
 
 
 

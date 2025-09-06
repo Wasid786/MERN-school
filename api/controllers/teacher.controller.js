@@ -4,12 +4,14 @@ const path = require("path")
 const fs = require("fs")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const cloudinary  = require("../utils/cloudnary")
 
 const Teacher = require("../models/teacher.model");
 module.exports= {
 
     
-registerTeacher:  async (req, res) => {
+
+registerTeacher: async (req, res) => {
   try {
     const form = new formidable.IncomingForm({ multiples: false });
 
@@ -21,7 +23,7 @@ registerTeacher:  async (req, res) => {
         });
       }
 
-      // Required fields check
+      // Required fields
       const requiredFields = [
         "name",
         "email",
@@ -41,6 +43,7 @@ registerTeacher:  async (req, res) => {
         }
       }
 
+      // Check if teacher already exists
       const existingTeacher = await Teacher.findOne({ email: fields.email });
       if (existingTeacher) {
         return res.status(409).json({
@@ -49,7 +52,7 @@ registerTeacher:  async (req, res) => {
         });
       }
 
-      // Check and handle image file
+      // Handle image upload to Cloudinary
       const imageFile = files.image;
       if (!imageFile) {
         return res.status(400).json({
@@ -58,44 +61,37 @@ registerTeacher:  async (req, res) => {
         });
       }
 
-      const photo = imageFile[0]; // formidable always returns array
-      const originalFilename = photo.originalFilename.replace(/\s+/g, "_");
-      const uploadDir = path.join(__dirname, process.env.TEACHER_IMAGE_PATH);
+      const photo = imageFile[0]; // formidable gives array
+      const cloudinaryResult = await cloudinary.uploader.upload(photo.filepath, {
+        folder: "teacher_images", // Cloudinary folder
+        use_filename: true,
+        unique_filename: false,
+      });
 
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
+      // Password handling
+      const password = fields.password?.[0];
+      if (!password || typeof password !== "string") {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid password. Must be a non-empty string.",
+        });
       }
 
-      const newPath = path.join(uploadDir, originalFilename);
-      const fileData = fs.readFileSync(photo.filepath);
-      fs.writeFileSync(newPath, fileData);
+      const salt = bcrypt.genSaltSync(10);
+      const hashPassword = bcrypt.hashSync(password, salt);
 
-
-const password = fields.password?.[0];
-
-if (!password || typeof password !== "string") {
-  return res.status(400).json({
-    success: false,
-    message: "Invalid password. Must be a non-empty string.",
-  });
-}
-
-const salt = bcrypt.genSaltSync(10);
-const hashPassword = bcrypt.hashSync(password, salt);
-
-
-const newTeacher = new Teacher({
-  school: req.user.schoolId,
-  email: fields.email?.[0],
-  name: fields.name?.[0],
-  age: fields.age?.[0],
-  gender: fields.gender?.[0],
-  phone:fields.phone?.[0],
-  qualification: fields.qualification?.[0],
-  teacher_image: originalFilename,
-  password: hashPassword,
-});
-
+      // Save new teacher with Cloudinary image URL
+      const newTeacher = new Teacher({
+        school: req.user.schoolId,
+        email: fields.email?.[0],
+        name: fields.name?.[0],
+        age: fields.age?.[0],
+        gender: fields.gender?.[0],
+        phone: fields.phone?.[0],
+        qualification: fields.qualification?.[0],
+        teacher_image: cloudinaryResult.secure_url, // ✅ Cloudinary URL
+        password: hashPassword,
+      });
 
       const savedTeacher = await newTeacher.save();
 
@@ -114,7 +110,6 @@ const newTeacher = new Teacher({
     });
   }
 },
-
 
 
 loginTeacher :  async(req,res)=>{

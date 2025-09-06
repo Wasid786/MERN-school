@@ -36,7 +36,7 @@ const fetchTeacherDetails = async () => {
 
       <CardMedia
         component="img"
-        image={`./images/uploaded/teacher/${teacherDetails.teacher_image}`}
+        image={teacherDetails.teacher_image}
         alt="Paella dish"
         sx={{height:"310px", width:"310px", margin:"auto",borderRadius:"50%" }}
       />

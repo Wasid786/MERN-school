@@ -450,7 +450,7 @@ const  theme = useTheme()
         <CardMedia
           component="img"
           height="140"
-          image={`/images/uploaded/teacher/${teacher.teacher_image}`}
+         image={teacher.teacher_image}
           alt={teacher.name}
         />
         <CardContent>

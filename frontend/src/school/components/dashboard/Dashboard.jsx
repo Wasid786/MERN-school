@@ -142,7 +142,7 @@ export default function Dashboard (){
       position:'relative',
       height: '500px',
       width: '100%',
-      backgroundImage: `url(/images/uploaded/school/${school.school_image})`,
+      backgroundImage: `url(${school.school_image})`, 
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',

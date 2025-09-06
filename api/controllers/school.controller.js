@@ -5,18 +5,17 @@ const fs = require("fs")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const dotenv = require( "dotenv");
-
+const cloudinary  = require("../utils/cloudnary")
 dotenv.config();
 
 const School = require("../models/school.model");
 module.exports= {
+
 registerSchool: async (req, res) => {
   try {
-
     const form = new formidable.IncomingForm({ multiples: false });
 
     form.parse(req, async (err, fields, files) => {
-
       if (err) {
         return res.status(500).json({
           success: false,
@@ -24,8 +23,7 @@ registerSchool: async (req, res) => {
         });
       }
 
-  
-
+      // Required fields
       const requiredFields = ["school_name", "email", "owner_name", "password"];
       for (let key of requiredFields) {
         if (!fields[key] || !fields[key][0]) {
@@ -36,9 +34,9 @@ registerSchool: async (req, res) => {
         }
       }
 
-
       const email = fields.email[0];
 
+      // Check existing school
       const existingSchool = await School.findOne({ email });
       if (existingSchool) {
         return res.status(409).json({
@@ -47,7 +45,7 @@ registerSchool: async (req, res) => {
         });
       }
 
-
+      // Handle school image
       const imageFile = files.image;
       if (!imageFile) {
         return res.status(400).json({
@@ -56,33 +54,28 @@ registerSchool: async (req, res) => {
         });
       }
 
-      const photo = imageFile[0];
+      const photo = imageFile[0]; // formidable returns array
 
-      const originalFilename = photo.originalFilename.replace(/\s+/g, "_");
+      // ✅ Upload directly to Cloudinary
+      const cloudinaryResult = await cloudinary.uploader.upload(photo.filepath, {
+        folder: "school_images", // Cloudinary folder for schools
+        use_filename: true,
+        unique_filename: false,
+      });
 
-      const uploadDir = path.join(__dirname, process.env.SCHOOL_IMAGE_PATH);
-
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-      }
-
-      const newPath = path.join(uploadDir, originalFilename);
-      const fileData = fs.readFileSync(photo.filepath);
-      fs.writeFileSync(newPath, fileData);
-
+      // Hash password
       const password = fields.password[0];
-
       const salt = bcrypt.genSaltSync(10);
       const hashPassword = bcrypt.hashSync(password, salt);
 
+      // Create new School entry with Cloudinary URL
       const newSchool = new School({
         school_name: fields.school_name[0],
         email: email,
         owner_name: fields.owner_name[0],
-        school_image: originalFilename,
+        school_image: cloudinaryResult.secure_url, // ✅ Cloudinary URL
         password: hashPassword,
       });
-
 
       const savedSchool = await newSchool.save();
 
@@ -92,11 +85,11 @@ registerSchool: async (req, res) => {
         message: "School registered successfully!",
       });
 
-      console.log(" Registration Successfully ");
+      console.log("School Registration Successfully");
     });
 
   } catch (error) {
-    console.log(" Error in School Registration:", error);
+    console.log("Error in School Registration:", error);
     res.status(500).json({
       success: false,
       message: "School registration failed",
@@ -104,6 +97,7 @@ registerSchool: async (req, res) => {
     });
   }
 },
+
 
    loginSchool :  async(req,res)=>{
     try {

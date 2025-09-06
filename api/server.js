@@ -29,7 +29,8 @@ app.use(cookieParser());
 
 
 
-mongoose.connect("mongodb://localhost:27017/schoolManagement")
+mongoose.connect(process.env.MONGOURI)
+
     .then(() => {
         console.log("MongoDB is connected successfully!");
     })
