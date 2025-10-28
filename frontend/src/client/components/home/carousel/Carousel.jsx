@@ -8,8 +8,15 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
 
+
+
 const carouselItems = [
     {
+        image:"https://www.shutterstock.com/image-vector/back-school-banner-educational-icons-260nw-2169797071.jpg",
+        title:"Explore Our Classrooms",
+        description:" Engaging and inspiring environment for every student.",
+    },
+       {
         image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMWB1LX35pInmtixcAmrPQzmqp-47sTxwcFw&s",
         title:"Explore Our Classrooms",
         description:" Engaging and inspiring environment for every student.",
