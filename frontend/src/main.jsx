@@ -3,10 +3,11 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import axios from 'axios';
-import { AuthProvider } from './context/AuthContext.jsx';
-import { CssBaseline } from '@mui/material';
 
+const theme = createTheme();
 
 axios.interceptors.request.use((request)=>{
   if(localStorage.getItem("token")){
@@ -16,12 +17,11 @@ axios.interceptors.request.use((request)=>{
 })
 
 createRoot(document.getElementById('root')).render(
-
-        <AuthProvider>
   <StrictMode>
-    <CssBaseline/>
-     <App/>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
   </StrictMode>,
-        </AuthProvider>
 );
 

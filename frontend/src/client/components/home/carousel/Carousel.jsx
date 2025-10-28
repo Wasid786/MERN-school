@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 
 const carouselItems = [
     {
-        image:"https://img.freepik.com/free-psd/instagram-posts-collection-back-school_23-2148631837.jpg?semt=ais_hybrid&w=740&q=80",
+        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMWB1LX35pInmtixcAmrPQzmqp-47sTxwcFw&s",
         title:"Explore Our Classrooms",
         description:" Engaging and inspiring environment for every student.",
     },
@@ -39,33 +39,11 @@ export default function Carousel (){
         setActiveIndex((prev)=>prev ===0 ?carouselItems.length -1 : prev -1 );
     }
     return (
-       <Box
-  sx={{
-    width: "100%",
-    maxWidth: "1200px",
-    margin: "0 auto",
-    overflow: "hidden",
-    position: "relative",
-  }}
->
-
+        <Box sx ={{position:'relative', width:'100%'}}>
             <SwipeableView index= {activeIndex} onChangeIndex={(index)=> setActiveIndex(index)}>
                 {carouselItems.map((item, index)=>(
                     <Box key = {index} sx={{position:'relative', textAlign:"center", color:"white"}}>
-                <img
-  src={item.image}
-  alt={item.title}
-  style={{
-    width: "100%",
-    height: "auto",
-    maxHeight: "80vh", 
-    objectFit: "cover",
-    objectPosition: "center",
-    borderRadius: "8px",
-    display: "block",
-  }}
-/>
-
+                        <img src={item.image} alt={item.title} style={{width:"100%", height:"70vh", minHeight:"400px", objectFit:"cover"}}/>
                         <Box sx={{position:'absolute', bottom:20, left:"50%", transform:"translateX(-50%)", bgcolor:"rgba(0,0,0,0.6", padding:"10px 20px", borderRadius:1}}>
                         <Typography variant="h5" >{item.title}</Typography>
                         <Typography variant="body1" >{item.description}</Typography>
@@ -76,7 +54,7 @@ export default function Carousel (){
                 ))}
             </SwipeableView>
 
-         
+            {/* ///////////// Navigation button /////////// */}
             <Box sx={{position:"absolute", top:"50%", left:0, transform:"translateY(-50%)", zIndex:1}}>
            <Button variant="contained" onClick={handleBack} >
             <ArrowBackIosIcon/>
