@@ -23,27 +23,20 @@ import ExaminationsStudent from './student/components/examinations/ExaminationsS
 import NoticeStudent from './student/components/notice/NoticeStudent'
 import AttendanceTeacher from './teacher/components/attendance/AttendanceTeacher'
 import ProtectedRoute from './guard/ProtectedRoute'
-import { AuthContext, AuthProvider } from './context/AuthContext'
+import { AuthProvider } from './context/AuthContext'
 import AttendanceStudentList from './school/components/attendance/AttendanceStudentList'
 import AttendanceDetails from './school/components/attendance/AttendanceDetails'
 import LogOut from './client/components/logout/LogOut'
-import ThemeButton from './basicUtilityComponent/theme/ThemeButton'
-import { ThemeProvider } from '@emotion/react'
-import { useContext } from 'react'
-import darkTheme from './basicUtilityComponent/theme/darkTheme/darkTheme'
-import lightTheme from './basicUtilityComponent/theme/lightTheme/lightTheme'
 
 
 
 
 function App() {
-  const {dark}= useContext(AuthContext)
 
   return (
     <>
- 
-         <ThemeProvider theme={dark? darkTheme: lightTheme}>
-            <ThemeButton/>
+    <AuthProvider> 
+
   
     <BrowserRouter>
       <Routes>
@@ -102,10 +95,7 @@ function App() {
 
       </Routes>
     </BrowserRouter>
-        </ThemeProvider>
-
-     
-
+      </AuthProvider>
    
     </>
   )
