@@ -30,6 +30,7 @@ import RecentActorsIcons from "@mui/icons-material/RecentActors"
 import FormatListNumberedIcons from "@mui/icons-material/FormatListNumbered"
 import HomeIcon from "@mui/icons-material/Home"
 import LogoutIcon from "@mui/icons-material/Logout"
+import ThemeButton from '../basicUtilityComponent/theme/ThemeButton';
 
 
 
@@ -153,7 +154,9 @@ export default function School() {
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
+  <div style={{position:'relative'}}>
+           <ThemeButton/>
+      <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -243,5 +246,6 @@ export default function School() {
             <Outlet/>
       </Box>
     </Box>
+  </div>
   );
 }
