@@ -39,11 +39,33 @@ export default function Carousel (){
         setActiveIndex((prev)=>prev ===0 ?carouselItems.length -1 : prev -1 );
     }
     return (
-        <Box sx ={{position:'relative', width:'100%'}}>
+       <Box
+  sx={{
+    width: "100%",
+    maxWidth: "1200px",
+    margin: "0 auto",
+    overflow: "hidden",
+    position: "relative",
+  }}
+>
+
             <SwipeableView index= {activeIndex} onChangeIndex={(index)=> setActiveIndex(index)}>
                 {carouselItems.map((item, index)=>(
                     <Box key = {index} sx={{position:'relative', textAlign:"center", color:"white"}}>
-                        <img src={item.image} alt={item.title} style={{width:"100%", height:"70vh", minHeight:"400px", objectFit:"cover"}}/>
+                <img
+  src={item.image}
+  alt={item.title}
+  style={{
+    width: "100%",
+    height: "auto",
+    maxHeight: "80vh", 
+    objectFit: "cover",
+    objectPosition: "center",
+    borderRadius: "8px",
+    display: "block",
+  }}
+/>
+
                         <Box sx={{position:'absolute', bottom:20, left:"50%", transform:"translateX(-50%)", bgcolor:"rgba(0,0,0,0.6", padding:"10px 20px", borderRadius:1}}>
                         <Typography variant="h5" >{item.title}</Typography>
                         <Typography variant="body1" >{item.description}</Typography>
