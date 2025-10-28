@@ -76,7 +76,7 @@ export default function Carousel (){
                 ))}
             </SwipeableView>
 
-            {/* ///////////// Navigation button /////////// */}
+         
             <Box sx={{position:"absolute", top:"50%", left:0, transform:"translateY(-50%)", zIndex:1}}>
            <Button variant="contained" onClick={handleBack} >
             <ArrowBackIosIcon/>
