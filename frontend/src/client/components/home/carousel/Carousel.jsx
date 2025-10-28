@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 
 const carouselItems = [
     {
-        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMWB1LX35pInmtixcAmrPQzmqp-47sTxwcFw&s",
+        image:"https://img.freepik.com/free-psd/instagram-posts-collection-back-school_23-2148631837.jpg?semt=ais_hybrid&w=740&q=80",
         title:"Explore Our Classrooms",
         description:" Engaging and inspiring environment for every student.",
     },
